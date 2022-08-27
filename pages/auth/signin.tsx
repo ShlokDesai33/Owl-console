@@ -2,20 +2,16 @@ import type { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Cookies from 'cookies'
 import { useState } from 'react'
-import KeyInputField from '../../components/auth/key'
-import PasswordInputField from '../../components/auth/password'
 import Link from 'next/link'
 import Image from 'next/image'
 import Spinner from '../../components/lib/spinner'
 import logoSvg from '../../public/images/logo.svg'
+import PinInputField from '../../components/auth/pin'
 
 const SignIn = ({ pageState }: { pageState: 'default' | '401' | '500' }) => {
   const [state, setState] = useState<'default' | 'loading' | '401' | '500'>(pageState);
   // input states
-  const [inputsState, setInputsState] = useState({
-    isKeyValid: false,
-    isPasswordValid: false,
-  });
+  const [isPinValid, setIsPinValid] = useState<boolean>(false);
 
   if (state === 'loading') {
     return (
@@ -77,7 +73,7 @@ const SignIn = ({ pageState }: { pageState: 'default' | '401' | '500' }) => {
           }
 
           <form className="flex flex-col justify-around" onSubmit={e => {
-            if (inputsState.isKeyValid && inputsState.isPasswordValid) {
+            if (isPinValid) {
               setTimeout(() => {
                 setState('loading');
               }, 500);
@@ -87,8 +83,7 @@ const SignIn = ({ pageState }: { pageState: 'default' | '401' | '500' }) => {
               e.stopPropagation();
             }
           }}>
-            <KeyInputField state={inputsState} setState={setInputsState} />
-            <PasswordInputField state={inputsState} setState={setInputsState} />
+            <PinInputField state={isPinValid} setState={setIsPinValid} />
 
             <button type="submit" className="text-primary border-2 border-primary py-3 rounded-xl">
               <h4>Sign In</h4>
@@ -108,9 +103,9 @@ const SignIn = ({ pageState }: { pageState: 'default' | '401' | '500' }) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // available on form submission
-  const { key, password } = ctx.query;
+  const { pin } = ctx.query;
   
-  if (!key || !password) {
+  if (!pin) {
     const cookies = new Cookies(ctx.req, ctx.res);
     const token = cookies.get('auth-token');
     
@@ -130,8 +125,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       method: 'POST',
       body: JSON.stringify(
         {
-          key,
-          password
+          pin
         }
       ),
       headers: { 'Content-Type': 'application/json' }
@@ -155,19 +149,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         }
       };
     }
-    else if (res.status === 401) {
-      // auth error (invalid credentials)
-      return {
-        props: {
-          pageState: '401'
-        }
-      };
-    }
     else {
-      // server error
+      // auth error (invalid credentials) or server error
       return {
         props: {
-          pageState: '500'
+          pageState: res.status === 401 ? '401' : '500'
         }
       };
     }

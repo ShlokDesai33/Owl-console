@@ -12,32 +12,25 @@ export default async function handler(
   res: NextApiResponse
 ) {
 
-  const { key, password } = req.body;
+  const { pin } = req.body;
   // Create a query against the /users collection.
-  const q = query(collection(db, 'users'), where('credentials.key', '==', key));
+  const q = query(collection(db, 'users'), where('credentials.pin', '==', pin));
 
   const querySnapshot = await getDocs(q);
   // there is never going to be more than one doc
   if (querySnapshot.docs.length === 1) {
     // doc.data() is never undefined for query doc snapshots
     querySnapshot.forEach(async (doc) => {
-      // check password
-      if (doc.data().credentials.password === password) {
-        // user authenticated; create org's auth token
-        const JWT_TOKEN = await new SignJWT({ })
-          .setProtectedHeader({ alg: 'HS256' })
-          .setSubject(doc.id)
-          .setIssuedAt()
-          .setIssuer('owl-console')
-          .sign(JWT_SECRET);
-  
-        res.setHeader('JWT-Token', JWT_TOKEN);
-        res.status(200).end();
-      }
-      else {
-        // 401: Unauthorized
-        return res.status(401).end();
-      }
+      // user authenticated; create org's auth token
+      const JWT_TOKEN = await new SignJWT({ })
+        .setProtectedHeader({ alg: 'HS256' })
+        .setSubject(doc.id)
+        .setIssuedAt()
+        .setIssuer('owl-console')
+        .sign(JWT_SECRET);
+
+      res.setHeader('JWT-Token', JWT_TOKEN);
+      res.status(200).end();
     });
   }
   else if (querySnapshot.docs.length === 0) {
