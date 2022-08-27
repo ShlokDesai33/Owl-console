@@ -1,3 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700&display=swap');
+
 @tailwind base;
+
+@layer base {
+  html {
+    font-family: 'Manrope', sans-serif;
+  }
+  /* Main call to action header. */
+  h1 {
+    @apply text-6xl font-medium leading-snug tracking-wide;
+  }
+  /* Owl logo header. font-normal -> font-medium if new logo allows it. */
+  h2 {
+    @apply text-4xl font-normal leading-8 tracking-wide;
+  }
+  /* Smaller call to action header. */
+  h3 {
+    @apply text-2xl font-medium leading-8 tracking-wide;
+  }
+  /* Headers 4, 5 and 6 used in dashboard too. */
+  h4 {
+    @apply text-xxl font-normal leading-8 tracking-wide;
+  }
+  h5 {
+    @apply text-xl font-normal leading-8 tracking-wide;
+  }
+  h6 {
+    @apply text-lg font-normal leading-8 tracking-wide;
+  }
+  p {
+    @apply text-base font-normal leading-8 tracking-wide;
+  }
+  input:focus {
+    outline: none !important;
+  }
+  input:-webkit-autofill {
+    -webkit-box-shadow:0 0 0 50px white inset;
+  }
+
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 50px white inset;
+  }
+  /* CSS to render stroke to 'Owl' text in landing page. */
+  .header-stroke {
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;
+  }
+  /* Configures scroll bar aesthetic. */
+  ::-webkit-scrollbar {
+    @apply w-0;
+  }
+}
+
 @tailwind components;
+
+@layer components {
+  /* A simple input field class. */
+  .input-field {
+    @apply outline-none bg-transparent placeholder:text-xl placeholder:text-gray-text;
+    @apply mt-6 border-2 py-4 px-4 w-full rounded-xl border-gray-btn text-xl focus:border-gray-text;
+  }
+}
+
 @tailwind utilities;
