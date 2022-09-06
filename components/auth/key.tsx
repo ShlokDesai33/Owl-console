@@ -19,24 +19,24 @@ type Props = {
   ) => void,
 }
 
-export default function PinInputField({ state, setState }: Props) {
+export default function KeyInputField({ state, setState }: Props) {
   return (
     <input
       type="password"
-      name="pin"
-      placeholder="Enter pin"
+      name="key"
+      placeholder="Enter key"
       className={classNames(
-        state.isPinValid && 'border-green-500',
-        !state.isPinValid && 'focus:border-red-500 border-gray-btn',
+        state.isKeyValid && 'border-green-500',
+        !state.isKeyValid && 'focus:border-red-500 border-gray-btn',
         'outline-none bg-transparent placeholder:text-xl placeholder:text-gray-text',
         'mb-6 border-2 py-4 px-4 w-full rounded-xl text-xl'
       )}
       onChange={(e) => {
-        if (lengthTest(e.target.value) && !state.isPinValid) {
-          setState({ ...state, isPinValid: true });
+        if (lengthTest(e.target.value) && !state.isKeyValid) {
+          setState({ ...state, isKeyValid: true });
         }
-        else if (!lengthTest(e.target.value) && state.isPinValid) {
-          setState({ ...state, isPinValid: false });
+        else if (!lengthTest(e.target.value) && state.isKeyValid) {
+          setState({ ...state, isKeyValid: false });
         }
       }}
     />

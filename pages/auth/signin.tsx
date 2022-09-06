@@ -6,12 +6,16 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Spinner from '../../components/lib/spinner'
 import logoSvg from '../../public/images/logo.svg'
+import KeyInputField from '../../components/auth/key'
 import PinInputField from '../../components/auth/pin'
 
 const SignIn = ({ pageState }: { pageState: 'default' | '401' | '500' }) => {
   const [state, setState] = useState<'default' | 'loading' | '401' | '500'>(pageState);
   // input states
-  const [isPinValid, setIsPinValid] = useState<boolean>(false);
+  const [credentials, setCredentials] = useState({
+    isPinValid: false,
+    isKeyValid: false,
+  });
 
   if (state === 'loading') {
     return (
@@ -73,7 +77,7 @@ const SignIn = ({ pageState }: { pageState: 'default' | '401' | '500' }) => {
           }
 
           <form className="flex flex-col justify-around" onSubmit={e => {
-            if (isPinValid) {
+            if (credentials.isPinValid && credentials.isKeyValid) {
               setTimeout(() => {
                 setState('loading');
               }, 500);
@@ -83,7 +87,8 @@ const SignIn = ({ pageState }: { pageState: 'default' | '401' | '500' }) => {
               e.stopPropagation();
             }
           }}>
-            <PinInputField state={isPinValid} setState={setIsPinValid} />
+            <PinInputField state={credentials} setState={setCredentials} />
+            <KeyInputField state={credentials} setState={setCredentials} />
 
             <button type="submit" className="text-primary border-2 border-primary py-3 rounded-xl">
               <h4>Sign In</h4>
@@ -103,9 +108,9 @@ const SignIn = ({ pageState }: { pageState: 'default' | '401' | '500' }) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // available on form submission
-  const { pin } = ctx.query;
+  const { key, pin } = ctx.query;
   
-  if (!pin) {
+  if (!key || !pin) {
     const cookies = new Cookies(ctx.req, ctx.res);
     const token = cookies.get('auth-token');
     
@@ -113,11 +118,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     if (token) {
       return {
         redirect: {
-          destination: '/',
+          destination: '/dashboard/admins',
           statusCode: 302
         }
       };
     }
+
+    // no token exists, user needs to log in
+    return { 
+      props: {
+        pageState: 'default'
+      } 
+    };
   }
   else {
     const url = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://owl-console.vercel.app';
@@ -125,7 +137,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       method: 'POST',
       body: JSON.stringify(
         {
-          pin
+          pin,
+          key
         }
       ),
       headers: { 'Content-Type': 'application/json' }
@@ -139,12 +152,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         httpOnly: true,
         // secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
+        // expires in one day
+        maxAge: 86400
       });
 
       // authentication successful
       return {
         redirect: {
-          destination: '/',
+          destination: '/dashboard/admins',
           statusCode: 302
         }
       };
@@ -158,13 +173,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       };
     }
   }
-
-  // no token exists, user needs to log in
-  return { 
-    props: {
-      pageState: 'default'
-    } 
-  };
 }
 
 export default SignIn

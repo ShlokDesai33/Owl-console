@@ -1,12 +1,9 @@
 import useSWR from 'swr'
+import type Organization from '../typescript/interfaces/organization';
 
 type Output = {
   status: 'authenticated' | 'unauthenticated' | 'loading';
-  org: {
-    id: string
-    name: string
-    logo: string
-  } | null;
+  data: any
 }
 
 const fetcher = (url: string) => (
@@ -28,7 +25,7 @@ const fetcher = (url: string) => (
  */
 export default function useSession(): Output {
   // make GET request with httpOnly cookie if it exists
-  const { data, error } = useSWR<any, Error>('/api/auth/session', fetcher, {
+  const { data, error } = useSWR<Organization, Error>('/api/auth/session', fetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
@@ -39,23 +36,19 @@ export default function useSession(): Output {
   if (error) {
     return {
       status: 'unauthenticated',
-      org: null
+      data: null
     };
   }
   else if (data) {
     return {
       status: 'authenticated',
-      org: {
-        id: data.id,
-        name: data.name,
-        logo: data.logo,
-      }
+      data: data
     };
   }
   else {
     return {
       status: 'loading',
-      org: null
+      data: null
     };
   }
 }

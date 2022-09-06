@@ -5,16 +5,17 @@ import { createSecretKey } from 'crypto'
 import Cookies from 'cookies'
 import { doc, getDoc } from 'firebase/firestore'
 import db from '../../../firebase'
+import Organization from '../../../typescript/interfaces/organization'
 
 // convert string to KeyObject
 const JWT_SECRET = createSecretKey(process.env.JWT_SECRET as string, 'utf-8');
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<Organization | { error: any }>
 ) {
   // create a cookie instance to configure cookies
-  const cookies = new Cookies(req, res, { secure: true });
+  const cookies = new Cookies(req, res);
   // get the auth cookie if it exists
   const token = cookies.get('auth-token');
 
@@ -24,17 +25,42 @@ export default async function handler(
       const { payload } = await jwtVerify(token, JWT_SECRET, {
         issuer: 'owl-console', // iss
       });
-      // user is authenticated
-      // get user data from firestore
-      const orgDoc = await getDoc(doc(db, 'users', payload.sub as string));
-      // error handling
+
+      const orgDoc = await getDoc(doc(db, `users/${payload.org || payload.sub}`));
+
       if (orgDoc.exists()) {
-        const data = orgDoc.data();
-        // send org data back to client
+        const org = orgDoc.data();
+        // check if user is admin
+        if (payload.org) {
+          const adminDoc = await getDoc(doc(db, `users/${payload.org}/admins/${payload.sub}`));
+  
+          if (adminDoc.exists()) {
+            const admin = adminDoc.data();
+
+            return res.status(200).json({
+              isAdmin: true,
+              // org details
+              orgId: payload.org as string,
+              orgName: org.name,
+              orgLogo: org.logo,
+              orgKey: org.credentials.key,
+              // admin details
+              adminId: payload.sub,
+              adminName: admin.fullname,
+              adminEmail: admin.email,
+              adminCell: admin.cell,
+              adminTeam: admin.team,
+            });
+          }
+        }
+        // user is root user
         return res.status(200).json({
-          id: orgDoc.id,
-          name: data.name,
-          logo: data.logo
+          isRoot: true,
+          // org details
+          orgId: payload.sub as string,
+          orgName: org.name,
+          orgLogo: org.logo,
+          orgKey: org.credentials.key,
         });
       } else {
         // doc.data() will be undefined in this case

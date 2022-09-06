@@ -12,33 +12,51 @@ export default async function handler(
   res: NextApiResponse
 ) {
 
-  const { pin } = req.body;
-  // Create a query against the /users collection.
-  const q = query(collection(db, 'users'), where('credentials.pin', '==', pin));
-
-  const querySnapshot = await getDocs(q);
-  // there is never going to be more than one doc
-  if (querySnapshot.docs.length === 1) {
-    // doc.data() is never undefined for query doc snapshots
-    querySnapshot.forEach(async (doc) => {
-      // user authenticated; create org's auth token
-      const JWT_TOKEN = await new SignJWT({ })
-        .setProtectedHeader({ alg: 'HS256' })
-        .setSubject(doc.id)
-        .setIssuedAt()
-        .setIssuer('owl-console')
-        .sign(JWT_SECRET);
-
-      res.setHeader('JWT-Token', JWT_TOKEN);
-      res.status(200).end();
-    });
-  }
-  else if (querySnapshot.docs.length === 0) {
+  const { pin, key } = req.body as { pin: string, key: string };
+  // find an org using the key
+  const orgQuery = query(collection(db, 'users'), where('credentials.key', '==', key));
+  const orgQSnapshot = await getDocs(orgQuery);
+  
+  // error handling
+  if (orgQSnapshot.docs.length !== 1) {
+    // org not found
     // 401: Unauthorized
     return res.status(401).end();
   }
-  else {
-    // impossible since one key can only be linked to one org
-    return res.status(500).end();
+
+  const orgDoc = orgQSnapshot.docs[0];
+
+  // check if user is a root user
+  if (orgDoc.data().credentials.pin === pin) {
+    const JWT_TOKEN = await new SignJWT({ })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setSubject(orgDoc.id)
+      .setIssuedAt()
+      .setIssuer('owl-console')
+      .sign(JWT_SECRET);
+
+    res.setHeader('JWT-Token', JWT_TOKEN);
+    return res.status(200).end();
   }
+  // user could be an admin
+  const adminQuery = query(collection(db, `users/${orgDoc.id}/admins`), where('credentials.pin', '==', pin));
+  const adminQSnapshot = await getDocs(adminQuery);
+
+  // error handling
+  if (adminQSnapshot.docs.length !== 1) {
+    // admin not found
+    // 401: Unauthorized
+    return res.status(401).end();
+  }
+
+  // user found with the pin
+  const JWT_TOKEN = await new SignJWT({ org: orgDoc.id })
+  .setProtectedHeader({ alg: 'HS256' })
+  .setSubject(adminQSnapshot.docs[0].id)
+  .setIssuedAt()
+  .setIssuer('owl-console')
+  .sign(JWT_SECRET);
+
+  res.setHeader('JWT-Token', JWT_TOKEN);
+  return res.status(200).end();
 }
