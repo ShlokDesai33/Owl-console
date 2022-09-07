@@ -1,46 +1,35 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { randomBytes } from 'crypto'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import db from '../../../firebase'
 
-type Data = {
-  name: string
-}
-
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
-  res.status(200).json({ name: 'John Doe' })
-}
+  
+  const { fullname, email, cell, team, orgId } = req.body;
+  // create unique personal id number for new admin
+  const pin = randomBytes(16).toString('hex');
 
-const crypto = require('crypto')
-const db = require('./firebase')
-const { runTransaction, doc } = require('firebase/firestore')
-
-module.exports.generateCredentials = async (orgId) => {
-  const pin = crypto.randomBytes(16).toString('hex');
-  const key = crypto.randomBytes(16).toString('hex');
-
-  // Create a reference to the org doc.
-  const docRef = doc(db, 'users', orgId);
-
-  // update the org with the key and password
   try {
-    await runTransaction(db, async (transaction) => {
-      const docSnapcshot = await transaction.get(docRef);
-      if (!docSnapcshot.exists()) {
-        throw "Document does not exist!";
-      }
-
-      // create the updated credentials object
-      const credentials = {
-        pin,
-        key
-      }
-
-      transaction.update(docRef, { credentials });
+    await addDoc(collection(db, `users/${orgId}/admins`), {
+      fullname,
+      email,
+      cell,
+      team,
+      pin,
+      createdAt: serverTimestamp(),
     });
-    console.log("New credentials successfully generated!");
-  } catch (e) {
-    console.log("Generation failed: ", e);
   }
+  catch {
+    // 500: Internal Server Error
+    res.status(500).end();
+  }
+
+  // send email
+
+  res.setHeader('pin', pin);
+  res.status(201).end();
+
 }

@@ -6,9 +6,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      spacing: {
-        'main': '800px'
-      },
       boxShadow: {
         'post-shadow': '0px 0px 20px -3px rgba(0, 0, 0, 0.17)',
       },

@@ -33,6 +33,7 @@ export default async function handler(
       .setSubject(orgDoc.id)
       .setIssuedAt()
       .setIssuer('owl-console')
+      .setExpirationTime('10 days')
       .sign(JWT_SECRET);
 
     res.setHeader('JWT-Token', JWT_TOKEN);
@@ -55,6 +56,7 @@ export default async function handler(
   .setSubject(adminQSnapshot.docs[0].id)
   .setIssuedAt()
   .setIssuer('owl-console')
+  .setExpirationTime('10 days')
   .sign(JWT_SECRET);
 
   res.setHeader('JWT-Token', JWT_TOKEN);

@@ -76,7 +76,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
         {/* nav bar and main div */}
-        <div className="flex h-full">
+        <div className="flex h-full w-full">
           <NavBar />
 
           {children}

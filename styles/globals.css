@@ -41,11 +41,6 @@
   input:-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0 50px white inset;
   }
-  /* CSS to render stroke to 'Owl' text in landing page. */
-  .header-stroke {
-    -webkit-text-stroke-width: 2px;
-    -webkit-text-stroke-color: black;
-  }
   /* Configures scroll bar aesthetic. */
   ::-webkit-scrollbar {
     @apply w-0;

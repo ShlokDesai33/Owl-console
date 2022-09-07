@@ -39,6 +39,7 @@ export default function PinInputField({ state, setState }: Props) {
           setState({ ...state, isPinValid: false });
         }
       }}
+      required
     />
   );
 }

@@ -152,8 +152,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         httpOnly: true,
         // secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        // expires in one day
-        maxAge: 86400
+        // expires in 10 days
+        maxAge: 864000000
       });
 
       // authentication successful

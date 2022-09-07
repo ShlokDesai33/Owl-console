@@ -3,7 +3,7 @@ import type Organization from '../typescript/interfaces/organization';
 
 type Output = {
   status: 'authenticated' | 'unauthenticated' | 'loading';
-  data: any
+  data: Organization | null;
 }
 
 const fetcher = (url: string) => (

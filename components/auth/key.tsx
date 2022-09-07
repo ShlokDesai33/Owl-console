@@ -39,6 +39,7 @@ export default function KeyInputField({ state, setState }: Props) {
           setState({ ...state, isKeyValid: false });
         }
       }}
+      required
     />
   );
 }
