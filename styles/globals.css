@@ -31,19 +31,26 @@
   p {
     @apply text-base font-normal leading-8 tracking-wide;
   }
+  label {
+    @apply text-lg font-normal tracking-wide;
+  }
   input:focus {
     outline: none !important;
   }
   input:-webkit-autofill {
     -webkit-box-shadow:0 0 0 50px white inset;
   }
-
   input:-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0 50px white inset;
   }
   /* Configures scroll bar aesthetic. */
   ::-webkit-scrollbar {
     @apply w-0;
+  }
+  select {
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+    appearance:none;
   }
 }
 

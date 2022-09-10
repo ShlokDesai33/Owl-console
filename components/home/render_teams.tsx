@@ -1,7 +1,5 @@
-import Admin from '../../typescript/interfaces/admin'
-
-export default function RenderTeams({ admins }: { admins: Admin[] | undefined }) {
-  if (!admins) {
+export default function RenderTeams({ teams }: { teams: string[] | undefined }) {
+  if (!teams) {
     return (
       <>
         <h4>Your Teams:</h4>
@@ -15,7 +13,7 @@ export default function RenderTeams({ admins }: { admins: Admin[] | undefined })
       </>
     );
   }
-  else if (admins.length === 0) {
+  else if (teams.length === 0) {
     return (
       <>
         <h4>Your Teams:</h4>
@@ -24,18 +22,13 @@ export default function RenderTeams({ admins }: { admins: Admin[] | undefined })
     )
   }
 
-  const teams = admins.map(admin => admin.team);
-  // TODO: remove duplicates
-  // @ts-ignore
-  const uniqueTeams = [...new Set(teams)];
-
   return (
     <>
       <h4>Your Teams:</h4>
       <p className="mb-8 text-gray-text">Click on a team to copy to clipboard.</p>
 
       <div className="flex gap-y-6 gap-x-6 flex-wrap">
-        {uniqueTeams.map(team => (
+        {teams.map(team => (
           <button className="rounded-full bg-gray-bg py-4 px-6 w-fit" onClick={e => {
             e.preventDefault();
             navigator.clipboard.writeText(team);

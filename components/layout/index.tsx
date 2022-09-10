@@ -5,11 +5,13 @@ import useSession from '../../hooks/useSession'
 import Spinner from '../lib/spinner'
 import logoSvg from '../../public/images/logo.svg'
 import NavBar from './navigation/navbar'
+import { useState } from 'react'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { data, status } = useSession();
+  const [isLoading, setIsLoading] = useState(false);
 
-  if (status !== 'authenticated' || !data) {
+  if (status !== 'authenticated' || !data || isLoading) {
     // status could be 'loading' or 'unauthenticated'
     if (status === 'unauthenticated') {
       // redirect to login page
@@ -68,10 +70,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 alt="Profile Picture"
                 className="rounded-full"
               />
-               <div>
-                  <h5 className="text-left truncate">{data.orgName}</h5>
-                  <p className="text-gray-text text-left truncate">@{data.orgId}</p>
-                </div>
+              <div>
+                <h5 className="text-left truncate">{data.orgName}</h5>
+                <p className="text-gray-text text-left truncate">@{data.orgId}</p>
+              </div>
+              <button className="ml-4 py-3 px-6 bg-white shadow-post-shadow rounded-xl" onClick={e => {
+                e.preventDefault();
+                setIsLoading(true);
+                router.push('/auth/signout');
+              }}>
+                <h6 className="text-primary font-medium">Sign Out</h6>
+              </button>
             </div>
           </div>
         </div>
