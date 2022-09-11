@@ -34,7 +34,7 @@ const CreateResource = ({ data }: { data: string }) => {
 
           <div className="flex">
             <div className="w-1/2 pr-6">
-              <h6 className="text-gray-text">Enter a list of sample requirements for your resource. Note: you <span className="underline underline-offset-2">must add atleast one</span> to procceed.</h6>
+              <h6 className="text-gray-text">Enter a list of sample requirements for your resource. Also add mention packaging instructions here. Note: you <span className="underline underline-offset-2">must add atleast one</span> to procceed.</h6>
               
               <ListInput
                 arrayName="sampleReqs"

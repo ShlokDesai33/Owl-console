@@ -8,6 +8,7 @@ import ListInput from '../../../../components/post/resource/list_input'
 import NewResourceHeader from '../../../../components/post/resource/header'
 
 const CreateResource = ({ data }: { data: string }) => {
+  console.log(data)
   const [applications, setApplications] = useState<string[]>([]);
   const [limitations, setLimitations] = useState<string[]>([]);
 
@@ -25,7 +26,7 @@ const CreateResource = ({ data }: { data: string }) => {
         <form className="w-full pr-8" action="/dashboard/resources/post/flow5" method="post">
           <NewResourceHeader />
 
-          <h6 className="text-gray-text">Enter a list of applications and limitations for your resource. Note: you <span className="underline underline-offset-2">must add atleast one of each</span> to procceed.</h6>
+          <h6 className="text-gray-text">Degree of characterisation, solvents and usables</h6>
 
           <div className="flex">
             <div className="w-1/2 pr-6">
@@ -67,9 +68,9 @@ const CreateResource = ({ data }: { data: string }) => {
         </form>
 
         <div className="flex flex-col items-center gap-y-3 ml-8 mb-12">
-          <h5>25%</h5>
+          <h5>75%</h5>
           <div className="flex flex-col justify-end h-full w-3 border-2 rounded-full">
-            <div className="w-2 h-1/4 bg-primary rounded-full"></div>
+            <div className="w-2 h-3/4 bg-primary rounded-full"></div>
           </div>
         </div>
       </main>
