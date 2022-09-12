@@ -4,7 +4,7 @@ import CustomListInput from './custom_list_input'
 type Props = {
   index: number,
   name: string,
-  content: string | string[]
+  content: string[]
   removeField: (index: number) => void
 }
 
@@ -29,10 +29,18 @@ export default function InfoField(props: Props) {
         name={`customField${props.index}`}
         placeholder="Enter field name"
         className="input-field mt-4"
+        onKeyDown={(e) => {
+          if (['Enter', 'NumpadEnter'].includes(e.key)) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }}
+        defaultValue={props.name}
       />
       <CustomListInput
         arrayName={`customField${props.index}`}
         placeholder="Enter bullet points"
+        defaultValue={props.content}
       />
     </div>
   )

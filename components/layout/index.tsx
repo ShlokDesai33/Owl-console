@@ -3,7 +3,6 @@ import Image from 'next/image'
 import router from 'next/router'
 import useSession from '../../hooks/useSession'
 import Spinner from '../lib/spinner'
-import logoSvg from '../../public/images/logo.svg'
 import NavBar from './navigation/navbar'
 import { useState } from 'react'
 
@@ -45,49 +44,36 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <link rel="icon" href="/images/favicon.ico" />
       </Head>
 
-      <div className="flex flex-col w-screen h-screen">
-        {/* top bar div */}
-        <div className="flex w-full border-b-2 bg-gray-bg">
-          {/* logo div / top bar lhs */}
-          <div className="flex items-center px-11 py-10 w-80 border-r-2 shrink-0">
-            <Image
-              src={logoSvg}
-              width={50}
-              height={50}
-              alt="Owl Logo"
-            />
-            <h3 className="ml-1">Owl <span className="text-gray-text font-normal">Console</span></h3>
-          </div>
-
-          {/* top bar rhs */}
-          <div className="flex grow items-center justify-end px-12">
-            {/* user profile div */}
-            <div className="flex items-center gap-x-3">
-              <Image
-                src={data.orgLogo}
-                width={60}
-                height={60}
-                alt="Profile Picture"
-                className="rounded-full"
-              />
-              <div>
-                <h5 className="text-left truncate">{data.orgName}</h5>
-                <p className="text-gray-text text-left truncate">@{data.orgId}</p>
+      <div className="flex w-screen h-screen">
+        <NavBar />
+        {/* lhs div */}
+        <div className="flex flex-col h-full w-full">
+          <div>
+            <div className="flex items-center justify-end px-12 border-b-2 bg-gray-bg h-36">
+              {/* user profile div */}
+              <div className="flex items-center gap-x-3">
+                <Image
+                  src={data.orgLogo}
+                  width={60}
+                  height={60}
+                  alt="Profile Picture"
+                  className="rounded-full"
+                />
+                <div>
+                  <h5 className="text-left truncate">{data.orgName}</h5>
+                  <p className="text-gray-text text-left truncate">@{data.orgId}</p>
+                </div>
+                <button className="ml-4 py-3 px-6 bg-white shadow-post-shadow rounded-xl" onClick={e => {
+                  e.preventDefault();
+                  setIsLoading(true);
+                  router.push('/auth/signout');
+                }}>
+                  <h6 className="text-primary font-medium">Sign Out</h6>
+                </button>
               </div>
-              <button className="ml-4 py-3 px-6 bg-white shadow-post-shadow rounded-xl" onClick={e => {
-                e.preventDefault();
-                setIsLoading(true);
-                router.push('/auth/signout');
-              }}>
-                <h6 className="text-primary font-medium">Sign Out</h6>
-              </button>
             </div>
           </div>
-        </div>
-        {/* nav bar and main div */}
-        <div className="flex h-full w-full">
-          <NavBar />
-
+          
           {children}
         </div>
       </div>

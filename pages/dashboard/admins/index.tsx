@@ -60,7 +60,7 @@ const ManageAdmins = ({ error }: { error: boolean }) => {
         <title>Admin Management | Owl Console</title>
       </Head>
       
-      <main className="flex w-full h-full">
+      <main className="flex w-full h-full overflow-x-scroll">
         <div className="flex flex-col gap-y-8 w-1/2 pt-12 pl-12 pr-6 overflow-y-scroll">
           <h4>Your Admins:</h4>
           <RenderAdmins admins={admins} setAdmins={setAdmins} />

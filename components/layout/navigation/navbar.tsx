@@ -1,6 +1,8 @@
 import { Books, GearSix, HouseSimple, PlusCircle, UsersThree } from 'phosphor-react'
 import useSession from '../../../hooks/useSession'
 import NavButton from './button'
+import Image from 'next/image'
+import logoSvg from '../../../public/images/logo.svg'
 
 /**
  * Allows the user to navigate to the different pages
@@ -11,8 +13,18 @@ export default function NavBar(): JSX.Element {
 
   return (
     <div className="flex flex-col shrink-0 w-80 border-r-2 bg-gray-bg">
+      {/* logo div */}
+      <div className="flex items-center pl-11 border-b-2 h-36 shrink-0">
+        <Image
+          src={logoSvg}
+          width={50}
+          height={50}
+          alt="Owl Logo"
+        />
+        <h3 className="ml-1">Owl <span className="text-gray-text font-normal">Console</span></h3>
+      </div>
       {/* main nav buttons */}
-      <div className="flex flex-col gap-y-10 py-12 px-11 border-b-2">
+      <div className="flex flex-col gap-y-10 py-12 pl-11 border-b-2">
         <NavButton
           title="Home"
           icon={<HouseSimple size={30} />}
@@ -38,7 +50,7 @@ export default function NavBar(): JSX.Element {
       </div>
 
       {/* other nav buttons */}
-      <div className="flex flex-col gap-y-10 pt-12 px-11">
+      <div className="flex flex-col gap-y-10 pt-12 pl-11">
         <NavButton
           title="Settings"
           icon={<GearSix size={30} />}

@@ -6,14 +6,32 @@ import { ArrowRight } from 'phosphor-react'
 import { useState } from 'react'
 import ListInput from '../../../../components/post/resource/list_input'
 import NewResourceHeader from '../../../../components/post/resource/header'
+import useSessionStorage from '../../../../hooks/useSessionStorage'
+import Spinner from '../../../../components/lib/spinner'
+import { useRouter } from 'next/router'
+import { getArray } from '../../../../components/post/resource/functions'
 
-const CreateResource = ({ data }: { data: string }) => {
-  const [applications, setApplications] = useState<string[]>([]);
-  const [limitations, setLimitations] = useState<string[]>([]);
+const CreateResource = ({ data }: { data: string | null }) => {
+  const { formData, redirect } = useSessionStorage(2, data);
+  const router = useRouter();
+  const [applications, setApplications] = useState<string[]>(formData ? getArray(formData.applications) : []);
+  const [limitations, setLimitations] = useState<string[]>(formData ? getArray(formData.limitations) : []);
 
-  // if data exists, then store it in session storage
-  // if no data is passed, try to fetch data from session storage
-  // if no data + no session storage, then redirect to /dashboard/resources/post/flow1
+  if (redirect) {
+    router.replace('/dashboard/resources/post/flow1');
+
+    return (
+      <>
+        <Head>
+          <title>Create Resources | Owl Console</title>
+        </Head>
+
+        <div className="flex grow place-items-center justify-center">
+          <Spinner />
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
@@ -21,9 +39,9 @@ const CreateResource = ({ data }: { data: string }) => {
         <title>Create Resources | Owl Console</title>
       </Head>
 
-      <main className="flex pt-12 px-12 w-full h-full">
+      <main className="flex pt-12 px-12 w-full h-full overflow-x-scroll">
         <form className="w-full pr-8" action="/dashboard/resources/post/flow3" method="post">
-          <NewResourceHeader />
+          <NewResourceHeader flow={2} />
 
           <h6 className="text-gray-text">Enter a list of applications and limitations for your resource. Note: you <span className="underline underline-offset-2">must add atleast one of each</span> to procceed.</h6>
 
@@ -40,7 +58,7 @@ const CreateResource = ({ data }: { data: string }) => {
                 type="text"
                 name="data"
                 hidden
-                value={data}
+                value={data ? data :  JSON.stringify(formData)}
                 readOnly
               />
             </div>
@@ -65,13 +83,6 @@ const CreateResource = ({ data }: { data: string }) => {
             </button>
           </div>
         </form>
-
-        <div className="flex flex-col items-center gap-y-3 ml-8 mb-12">
-          <h5>25%</h5>
-          <div className="flex flex-col justify-end h-full w-3 border-2 rounded-full">
-            <div className="w-2 h-1/4 bg-primary rounded-full"></div>
-          </div>
-        </div>
       </main>
     </>
   )
@@ -85,11 +96,23 @@ CreateResource.getLayout = function getLayout(page: React.ReactElement) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { req } = ctx;
 
+  if (req.method !== 'POST') {
+    return {
+      props: {
+        data: null
+      }
+    };
+  }
+
   const body = await parseBody(req, '1mb');
 
   if (!body) {
     // check session storage for data
-    return { props: { } }
+    return {
+      props: {
+        data: null
+      }
+    }
   }
 
   return {

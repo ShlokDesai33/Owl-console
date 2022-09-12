@@ -4,11 +4,12 @@ import { useRef, useState } from 'react'
 type Props = {
   arrayName: string
   placeholder: string
+  defaultValue?: string[]
 }
 
 export default function ListInputWithState(props: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [inputList, setInputList] = useState<string[]>([]);
+  const [inputList, setInputList] = useState<string[]>(props.defaultValue || []);
 
   function handleRemove(ind: number): void {
     const list = [...inputList];
@@ -28,14 +29,22 @@ export default function ListInputWithState(props: Props) {
           type="text"
           placeholder={props.placeholder}
           className="input-field mt-0"
+          onKeyDown={(e) => {
+            if (['Enter', 'NumpadEnter'].includes(e.key)) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
           ref={inputRef}
         />
         <button 
-          type="button" 
+          type="button"
           className="py-2 px-5 border-2 border-primary rounded-xl text-primary disabled:border-gray-btn disabled:text-gray-text" 
           onClick={e => {
+            if (!inputRef.current) return;
             e.preventDefault();
-            handleAdd(inputRef?.current?.value as string);
+            handleAdd(inputRef.current.value as string);
+            inputRef.current.value = '';
           }}
           disabled={inputList.length >= 10}
         ><h5>Add</h5></button>

@@ -4,11 +4,24 @@ import Layout from '../../../../components/layout'
 import NewResourceHeader from '../../../../components/post/resource/header'
 import useSession from '../../../../hooks/useSession'
 import { NextPageWithLayout } from '../../../../typescript/nextpage'
+import useSessionStorage from '../../../../hooks/useSessionStorage'
+import Spinner from '../../../../components/lib/spinner'
 
 const CreateResource: NextPageWithLayout = () => {
   const { data }= useSession();
+  const { formData } = useSessionStorage(1, null);
 
-  if (!data) return <></>;
+  if (!data) return (
+    <>
+      <Head>
+        <title>Create Resources | Owl Console</title>
+      </Head>
+
+      <div className="flex grow place-items-center justify-center">
+        <Spinner />
+      </div>
+    </>
+  )
 
   return (
     <>
@@ -16,9 +29,9 @@ const CreateResource: NextPageWithLayout = () => {
         <title>Create Resources | Owl Console</title>
       </Head>
 
-      <main className="flex pt-12 px-12 w-full h-full">
-        <form className="w-full pr-8" action="/dashboard/resources/post/flow2" method="post">
-          <NewResourceHeader />
+      <main className="pt-12 px-12 w-full h-ful overflow-x-scroll">
+        <form className="w-full" action="/dashboard/resources/post/flow2" method="post">
+          <NewResourceHeader flow={1} />
 
           <div className="flex">
             <div className="w-1/2 pr-6">
@@ -28,6 +41,8 @@ const CreateResource: NextPageWithLayout = () => {
                 placeholder="Resource Name"
                 className="input-field mt-0"
                 maxLength={50}
+                defaultValue={formData ? formData.name : ''}
+                autoComplete="off"
                 required
               />
               
@@ -37,6 +52,8 @@ const CreateResource: NextPageWithLayout = () => {
                 placeholder="Resource Description"
                 className="input-field"
                 maxLength={150}
+                defaultValue={formData ? formData.description : ''}
+                autoComplete="off"
                 required
               />
 
@@ -103,6 +120,8 @@ const CreateResource: NextPageWithLayout = () => {
                 placeholder="Price per Sample (in ₹)"
                 className="input-field mt-0"
                 maxLength={50}
+                defaultValue={formData ?  formData.price : ''}
+                autoComplete="off"
                 required
               />
 
@@ -113,6 +132,8 @@ const CreateResource: NextPageWithLayout = () => {
                   name="studentDiscount"
                   placeholder="Student Discount"
                   className="placeholder:text-gray-text w-full"
+                  defaultValue={formData ?  formData.studentDiscount : ''}
+                  autoComplete="off"
                   required
                 />
               </div>
@@ -123,6 +144,8 @@ const CreateResource: NextPageWithLayout = () => {
                   name="researcherDiscount"
                   placeholder="Researcher/Educator Discount"
                   className="placeholder:text-gray-text w-full"
+                  defaultValue={formData ? formData.researcherDiscount : ''}
+                  autoComplete="off"
                   required
                 />
               </div>
@@ -136,13 +159,6 @@ const CreateResource: NextPageWithLayout = () => {
             </button>
           </div>
         </form>
-
-        <div className="flex flex-col items-center gap-y-3 ml-8 mb-12">
-          <h5>0%</h5>
-          <div className="flex flex-col justify-end h-full w-3 border-2 rounded-full">
-            <div className="w-2 h-0 bg-primary rounded-full"></div>
-          </div>
-        </div>
       </main>
     </>
   )

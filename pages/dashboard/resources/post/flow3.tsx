@@ -7,20 +7,37 @@ import Layout from '../../../../components/layout'
 import InfoField from '../../../../components/post/resource/fields/info'
 import ListInput from '../../../../components/post/resource/list_input'
 import NewResourceHeader from '../../../../components/post/resource/header'
+import useSessionStorage from '../../../../hooks/useSessionStorage'
+import router from 'next/router'
+import Spinner from '../../../../components/lib/spinner'
+import { getArray } from '../../../../components/post/resource/functions'
 
 type CustomField = {
   // name of field
   name: string
-  content: string | string[]
+  content: string[]
 }
 
-const CreateResource = ({ data }: { data: string }) => {
-  const [sampleReqs, setSampleReqs] = useState<string[]>([]);
-  const [customFields, setCustomFields] = useState<CustomField[]>([]);
+const CreateResource = ({ data }: { data: string | null }) => {
+  const { formData, redirect } = useSessionStorage(3, data);
+  const [sampleReqs, setSampleReqs] = useState<string[]>(formData ? getArray(formData.sampleRecs) : []);
+  const [customFields, setCustomFields] = useState<CustomField[]>(formData ? formData.infoFields || [] : []);
 
-  // if data exists, then store it in session storage
-  // if no data is passed, try to fetch data from session storage
-  // if no data + no session storage, then redirect to /dashboard/resources/post/flow1
+  if (redirect) {
+    router.replace('/dashboard/resources/post/flow1');
+
+    return (
+      <>
+        <Head>
+          <title>Create Resources | Owl Console</title>
+        </Head>
+
+        <div className="flex grow place-items-center justify-center">
+          <Spinner />
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
@@ -28,9 +45,9 @@ const CreateResource = ({ data }: { data: string }) => {
         <title>Create Resources | Owl Console</title>
       </Head>
 
-      <main className="flex pt-12 px-12 w-full h-full">
+      <main className="flex pt-12 px-12 w-full h-full overflow-x-scroll">
         <form className="w-full pr-8" action="/dashboard/resources/post/flow4" method="post">
-          <NewResourceHeader />
+          <NewResourceHeader flow={3} />
 
           <div className="flex">
             <div className="w-1/2 pr-6">
@@ -47,7 +64,7 @@ const CreateResource = ({ data }: { data: string }) => {
                 type="text"
                 name="data"
                 hidden
-                value={data}
+                value={data ? data :  JSON.stringify(formData)}
                 readOnly
               />
             </div>
@@ -69,7 +86,7 @@ const CreateResource = ({ data }: { data: string }) => {
 
               <button className="mt-6 py-3 px-6 bg-gray-bg text-primary w-full rounded-full" type="button" onClick={e => {
                 e.preventDefault();
-                setCustomFields([...customFields, { name: '', content: '' }]);
+                setCustomFields([...customFields, { name: '', content: [] }]);
               }}>
                 <h5>Add Custom Field</h5>
               </button>
@@ -86,13 +103,6 @@ const CreateResource = ({ data }: { data: string }) => {
             </button>
           </div>
         </form>
-
-        <div className="flex flex-col items-center gap-y-3 ml-8 mb-12">
-          <h5>50%</h5>
-          <div className="flex flex-col justify-end h-full w-3 border-2 rounded-full">
-            <div className="w-2 h-1/2 bg-primary rounded-full"></div>
-          </div>
-        </div>
       </main>
     </>
   )
@@ -106,12 +116,24 @@ CreateResource.getLayout = function getLayout(page: React.ReactElement) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { req } = ctx;
 
+  if (req.method !== 'POST') {
+    return {
+      props: {
+        data: null
+      }
+    };
+  }
+
   // parse the body of the request
   const body = await parseBody(req, '1mb');
 
   if (!body) {
     // check session storage for data
-    return { props: { } }
+    return {
+      props: {
+        data: null
+      }
+    };
   }
 
   // get /dashboard/resources/flow2 data and parse it

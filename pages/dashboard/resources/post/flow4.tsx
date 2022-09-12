@@ -2,19 +2,32 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Layout from '../../../../components/layout'
 import { parseBody } from 'next/dist/server/api-utils/node'
-import { ArrowRight } from 'phosphor-react'
+import { ArrowRight, Barricade } from 'phosphor-react'
 import { useState } from 'react'
 import ListInput from '../../../../components/post/resource/list_input'
 import NewResourceHeader from '../../../../components/post/resource/header'
+import useSessionStorage from '../../../../hooks/useSessionStorage'
+import router from 'next/router'
+import Spinner from '../../../../components/lib/spinner'
 
 const CreateResource = ({ data }: { data: string }) => {
-  console.log(data)
-  const [applications, setApplications] = useState<string[]>([]);
-  const [limitations, setLimitations] = useState<string[]>([]);
+  const { formData, redirect } = useSessionStorage(4, data);
 
-  // if data exists, then store it in session storage
-  // if no data is passed, try to fetch data from session storage
-  // if no data + no session storage, then redirect to /dashboard/resources/post/flow1
+  if (redirect) {
+    router.replace('/dashboard/resources/post/flow1');
+
+    return (
+      <>
+        <Head>
+          <title>Create Resources | Owl Console</title>
+        </Head>
+
+        <div className="flex grow place-items-center justify-center">
+          <Spinner />
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
@@ -22,13 +35,18 @@ const CreateResource = ({ data }: { data: string }) => {
         <title>Create Resources | Owl Console</title>
       </Head>
 
-      <main className="flex pt-12 px-12 w-full h-full">
+      <main className="flex pt-12 px-12 w-full h-full overflow-x-scroll">
         <form className="w-full pr-8" action="/dashboard/resources/post/flow5" method="post">
-          <NewResourceHeader />
+          <NewResourceHeader flow={4} />
 
-          <h6 className="text-gray-text">Degree of characterisation, solvents and usables</h6>
+          <div className="flex grow justify-center items-center gap-x-3">
+            <Barricade size={70} color="#BE6CFF" weight="light" />
+            <h3 className="font-normal">Comming Soon!</h3>
+          </div>
 
-          <div className="flex">
+          {/* <h6 className="text-gray-text">Degree of characterisation, solvents and usables</h6> */}
+
+          {/* <div className="flex">
             <div className="w-1/2 pr-6">
               <ListInput
                 arrayName="applications"
@@ -64,15 +82,8 @@ const CreateResource = ({ data }: { data: string }) => {
               <h5 className="font-medium text-white">Next</h5>
               <ArrowRight size={27} color="white" />
             </button>
-          </div>
+          </div> */}
         </form>
-
-        <div className="flex flex-col items-center gap-y-3 ml-8 mb-12">
-          <h5>75%</h5>
-          <div className="flex flex-col justify-end h-full w-3 border-2 rounded-full">
-            <div className="w-2 h-3/4 bg-primary rounded-full"></div>
-          </div>
-        </div>
       </main>
     </>
   )
