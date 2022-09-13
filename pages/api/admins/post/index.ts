@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { randomBytes } from 'crypto'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
-import db from '../../../firebase'
+import db from '../../../../firebase'
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,10 +24,24 @@ export default async function handler(
   }
   catch {
     // 500: Internal Server Error
-    res.status(500).end();
+    return res.status(500).end();
   }
 
-  // send email
+  // send email asynchronously
+  const url = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://owl-console.vercel.app';
+  fetch(`${url}/api/admins/post/email`, {
+    method: 'POST',
+    body: JSON.stringify(
+      {
+        fullname,
+        email,
+        team,
+        orgId,
+        pin
+      }
+    ),
+    headers: { 'Content-Type': 'application/json' }
+  });
 
   res.setHeader('pin', pin);
   res.status(201).end();
