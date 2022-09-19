@@ -8,6 +8,7 @@ export default interface Organization {
   isRoot?: boolean
   // present if user is admin
   isAdmin?: boolean
+  adminId?: string
   adminName?: string
   adminEmail?: string
   adminCell?: string

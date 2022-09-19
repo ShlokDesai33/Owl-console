@@ -40,7 +40,7 @@ export default async function handler(
     return res.status(200).end();
   }
   // user could be an admin
-  const adminQuery = query(collection(db, `users/${orgDoc.id}/admins`), where('credentials.pin', '==', pin));
+  const adminQuery = query(collection(db, `users/${orgDoc.id}/admins`), where('pin', '==', pin));
   const adminQSnapshot = await getDocs(adminQuery);
 
   // error handling

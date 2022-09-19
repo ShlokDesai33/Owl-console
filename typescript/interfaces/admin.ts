@@ -5,4 +5,5 @@ export default interface Admin {
   cell: string
   pin: string
   team: string
+  orgId: string
 }

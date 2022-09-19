@@ -45,6 +45,7 @@ export default async function handler(
               orgLogo: org.logo,
               orgKey: org.credentials.key,
               // admin details
+              adminId: payload.sub as string,
               adminName: admin.fullname,
               adminEmail: admin.email,
               adminCell: admin.cell,

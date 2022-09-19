@@ -14,7 +14,7 @@ const Home: NextPageWithLayout = () => {
   }
   else if (status === 'authenticated') {
     // redirect to dashboard
-    router.push('/dashboard/admins');
+    router.push('/dashboard');
   }
 
   return (

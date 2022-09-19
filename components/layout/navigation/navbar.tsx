@@ -29,24 +29,33 @@ export default function NavBar(): JSX.Element {
           title="Home"
           icon={<HouseSimple size={30} />}
           url="/dashboard"
+          slug={false}
         />
+
         { data?.isRoot &&
           <NavButton
             title="Admins"
             icon={<UsersThree size={30} />}
             url="/dashboard/admins"
+            slug={true}
           />
         }
+
         <NavButton
           title="Resources"
           icon={<Books size={30} weight="light" />}
-          url="/dashboard/resources"
+          url="/dashboard/resources/view"
+          slug={true}
         />
-        <NavButton
-          title="Create Resource"
-          icon={<PlusCircle size={30} />}
-          url="/dashboard/resources/post/flow1"
-        />
+        
+        { data?.isAdmin && 
+          <NavButton
+            title="Create Resource"
+            icon={<PlusCircle size={30} />}
+            url="/dashboard/resources/post"
+            slug={true}
+          />
+        }
       </div>
 
       {/* other nav buttons */}
@@ -55,6 +64,7 @@ export default function NavBar(): JSX.Element {
           title="Settings"
           icon={<GearSix size={30} />}
           url="/dashboard/settings"
+          slug={false}
         />
       </div>
 		</div>

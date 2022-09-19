@@ -3,7 +3,6 @@ export default function useSessionStorage(flow: number, data: string | null) {
   if (typeof window === 'undefined') {
     return {
       formData: null,
-      redirect: false,
     }
   }
 
@@ -17,13 +16,11 @@ export default function useSessionStorage(flow: number, data: string | null) {
   if (json) {
     return {
       formData: JSON.parse(json),
-      redirect: false
     };
   }
   else {
     return {
       formData: null,
-      redirect: data ? false :true
     };
   }
 }

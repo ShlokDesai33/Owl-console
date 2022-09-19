@@ -25,7 +25,7 @@ export default function ListInput(props: Props) {
 
   return (
     <>
-      <div className="flex items-center mt-6 gap-x-6">
+      <div className="flex items-center gap-x-6">
         <input
           type="text"
           placeholder={props.placeholder}
@@ -34,16 +34,24 @@ export default function ListInput(props: Props) {
             if (['Enter', 'NumpadEnter'].includes(e.key)) {
               e.preventDefault();
               e.stopPropagation();
+              if (!inputRef.current) return;
+              if (inputRef.current.value.length > 250) return;
+              handleAdd(inputRef.current.value as string);
+              inputRef.current.value = '';
             }
           }}
+          autoComplete="off"
+          maxLength={250}
           ref={inputRef}
         />
+        
         <button
-          type="button" 
+          type="button"
           className="py-2 px-5 border-2 border-primary rounded-xl text-primary disabled:border-gray-btn disabled:text-gray-text" 
           onClick={e => {
-            if (!inputRef.current) return;
             e.preventDefault();
+            if (!inputRef.current) return;
+            if (inputRef.current.value.length > 250) return;
             handleAdd(inputRef.current.value as string);
             inputRef.current.value = '';
           }}

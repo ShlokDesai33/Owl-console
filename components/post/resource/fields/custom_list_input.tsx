@@ -37,9 +37,9 @@ export default function ListInputWithState(props: Props) {
           }}
           ref={inputRef}
         />
-        <button 
+        <button
           type="button"
-          className="py-2 px-5 border-2 border-primary rounded-xl text-primary disabled:border-gray-btn disabled:text-gray-text" 
+          className="py-2 px-5 border-2 border-primary rounded-xl text-primary disabled:border-gray-btn disabled:text-gray-text"
           onClick={e => {
             if (!inputRef.current) return;
             e.preventDefault();

@@ -2,7 +2,6 @@ import { MagnifyingGlass, X } from 'phosphor-react'
 import { useRef } from 'react'
 import { Hits, useSearchBox } from 'react-instantsearch-hooks-web'
 import { NoResultsBoundary } from './results'
-import UserHit from './hit'
 
 export default function SearchUsers() {
   // connect custom search box to algolia
@@ -36,9 +35,7 @@ export default function SearchUsers() {
       </div>
       
       <NoResultsBoundary isSearchStalled={isSearchStalled}>
-        <Hits
-          hitComponent={UserHit}
-        />
+        <Hits />
       </NoResultsBoundary>
     </>
   )

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { PlusCircle } from "phosphor-react";
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
@@ -6,65 +6,76 @@ function classNames(...classes: (string | boolean)[]) {
 
 export default function NewResourceHeader({ flow }: { flow: number }) {
   return (
-    <div className="flex items-center mb-12">
-      {/* Flow 1 Circle */}
-      <Link href={flow > 1 ? '/dashboard/resources/post/flow1' : ''} passHref>
-        <button className={classNames(
+    <div>
+      <div className="flex items-center mb-12">
+        {/* Flow 1 Circle */}
+        <div className={classNames(
           flow === 1 ? 'border-4 border-primary bg-white' : 'bg-primary',
           'w-6 h-6 rounded-full shrink-0'
-        )}></button>
-      </Link>
-
-      <div className="flex h-1 w-full bg-gray-btn">
-        <div className={classNames(
-          flow > 1 && 'bg-primary',
-          'w-full h-1'
         )}></div>
-      </div>
 
-      {/* Flow 2 Circle */}
-      <Link href={flow > 2 ? '/dashboard/resources/post/flow2' : ''} passHref>
-        <button className={classNames(
+        <div className="flex h-1 w-full bg-gray-btn">
+          <div className={classNames(
+            flow > 1 && 'bg-primary',
+            'w-full h-1'
+          )}></div>
+        </div>
+
+        {/* Flow 2 Circle */}
+        <div className={classNames(
           flow === 2 ? 'border-4 border-primary bg-white' : 'bg-primary',
           flow > 2 && 'bg-primary',
           flow < 2 && 'bg-gray-btn',
           'w-6 h-6 rounded-full shrink-0'
-        )}></button>
-      </Link>
-
-      <div className="flex h-1 w-full bg-gray-btn">
-        <div className={classNames(
-          flow > 2 && 'bg-primary',
-          'w-full h-1'
         )}></div>
-      </div>
 
-      {/* Flow 3 Circle */}
-      <Link href={flow > 3 ? '/dashboard/resources/post/flow3' : ''} passHref>
-        <button className={classNames(
+        <div className="flex h-1 w-full bg-gray-btn">
+          <div className={classNames(
+            flow > 2 && 'bg-primary',
+            'w-full h-1'
+          )}></div>
+        </div>
+
+        {/* Flow 3 Circle */}
+        <div className={classNames(
           flow === 3 ? 'border-4 border-primary bg-white' : 'bg-primary',
           flow > 3 && 'bg-primary',
           flow < 3 && 'bg-gray-btn',
           'w-6 h-6 rounded-full shrink-0'
-        )}></button>
-      </Link>
-
-      <div className="flex h-1 w-full bg-gray-btn">
-        <div className={classNames(
-          flow > 3 && 'bg-primary',
-          'w-full h-1'
         )}></div>
-      </div>
 
-      {/* Flow 4 Circle */}
-      <Link href={flow > 4 ? '/dashboard/resources/post/flow4' : ''} passHref>
-        <button className={classNames(
+        <div className="flex h-1 w-full bg-gray-btn">
+          <div className={classNames(
+            flow > 3 && 'bg-primary',
+            'w-full h-1'
+          )}></div>
+        </div>
+
+        {/* Flow 4 Circle */}
+        <div className={classNames(
           flow === 4 ? 'border-4 border-primary bg-white' : 'bg-primary',
           flow > 4 && 'bg-primary',
           flow < 4 && 'bg-gray-btn',
           'w-6 h-6 rounded-full shrink-0'
-        )}></button>
-      </Link>
+        )}></div>
+      </div>
+
+      <div className="bg-gray-bg rounded-xl w-full py-3 px-5">
+        <h6 className="text-gray-text">
+          Please fill in all required feilds. The more information you provide, the better our algorithm ranks this resource!
+        </h6>
+      </div>
+
+      <div className="flex items-center justify-between mt-6 mb-8">
+        <div className="flex items-center gap-x-3">
+          <PlusCircle size={30} color="#BE6CFF" />
+          <h3 className="font-normal">New Resource</h3>
+        </div>
+
+        <a href="https://owl-console.vercel.app/dashboard/support" target="_blank" rel="noreferrer" className="py-1 px-6 border-2 border-secondary rounded-full">
+          <h6 className="text-secondary font-medium">Help</h6>
+        </a>
+      </div>
     </div>
   )
 }

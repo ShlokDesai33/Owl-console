@@ -1,22 +1,20 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 type Props = {
-  url: string;
-  title: string;
-  icon: React.ReactNode;
+  url: string
+  slug: boolean
+  title: string
+  icon: React.ReactNode
 }
 
 /**
  * Renders a navigation button
- * @param url page url
- * @param title page title
- * @param icon a phospher icon
  * @returns {JSX.Element} a reactive button
  */
-export default function NavButton({ url, title, icon }: Props): JSX.Element {
+export default function NavButton({ url, title, icon, slug }: Props): JSX.Element {
   const router = useRouter();
-  if (router.pathname === url) {
+  if (!slug ? router.pathname === url : router.pathname.startsWith(url)) {
     return (
       <button className="flex w-fit items-center text-secondary group">
         {icon}

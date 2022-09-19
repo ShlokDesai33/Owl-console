@@ -13,6 +13,12 @@ export default async function handler(
 
   const { fullname, pin, orgId, email, team } = req.body
 
+  // error handling
+  if (!fullname || !pin || !orgId || !email || !team) {
+    // 400: Bad Request
+    return res.status(400).end();
+  }
+
   const docSnap = await getDoc(doc(db, 'users', orgId));
 
   if (!docSnap.exists()) {

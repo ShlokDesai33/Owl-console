@@ -24,10 +24,12 @@ export default async function handler(
   querySnapshot.forEach((doc) => {
     admins.push({
       id: doc.id,
+      orgId: orgId,
       ...doc.data()
     } as Admin);
   });
 
   // 200: OK
   return res.status(200).json(admins);
+  
 }

@@ -4,23 +4,48 @@ import { useState } from 'react'
 import Spinner from '../lib/spinner'
 
 export default function AdminCell({ admin, admins, setAdmins }: { admin: Admin, admins: Admin[], setAdmins: (admins: Admin[]) => void }) {
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [state, setState] = useState<'default' | 'error' | 'deleting'>('default');
 
-  function removeAdmin() {
-    setIsDeleting(true)
+  async function removeAdmin() {
+    setState('deleting');
     // TODO: remove admin from database
-    const id = admin.id;
-    setAdmins(admins.filter(admin => id !== admin.id));
+    const res = await fetch('/api/admins/delete', {
+      method: 'POST',
+      body: JSON.stringify({
+        orgId: admin.orgId,
+        adminId: admin.id
+      }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+
+    if (res.ok) {
+      const id = admin.id;
+      setAdmins(admins.filter(admin => id !== admin.id));
+      setState('default');
+    }
+    else {
+      setState('error');
+      setTimeout(() => setState('default'), 2000);
+    }
   }
 
-  if (isDeleting) {
+  if (state === 'deleting') {
     return (
-      <div className="flex items-center justify-center gap-x-2">
+      <div className="flex items-center justify-center gap-x-2 my-10">
         <Spinner />
         <h5>Removing Admin...</h5>
       </div>
     )
   }
+  else if (state === 'error') {
+    return (
+      <div className="flex items-center justify-center gap-x-2 my-10">
+        <Trash size={32} className="text-red-500" />
+        <h5>Error Removing Admin</h5>
+      </div>
+    )
+  }
+  
   return (
     <div className="p-6 border-2 border-gray-btn rounded-xl" key={admin.id}>
       <div className="flex items-center justify-between">

@@ -41,7 +41,7 @@ const ManageAdmins = ({ error }: { error: boolean }) => {
           <title>Admin Management | Owl Console</title>
         </Head>
 
-        <div className="flex w-full justify-center items-center gap-x-3">
+        <div className="flex grow justify-center items-center gap-x-3">
           <Prohibit size={70} color="#BE6CFF" weight="light" />
           <h3 className="font-normal">Access Restricted.</h3>
         </div>

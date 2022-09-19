@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import Layout from '../../../components/layout'
-import { NextPageWithLayout } from '../../../typescript/nextpage'
+import Layout from '../../../../components/layout'
+import { NextPageWithLayout } from '../../../../typescript/nextpage'
 
 const Resources: NextPageWithLayout = () => {
   return (

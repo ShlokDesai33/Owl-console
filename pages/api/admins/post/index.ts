@@ -9,7 +9,14 @@ export default async function handler(
 ) {
   
   const { fullname, email, cell, team, orgId } = req.body;
-  // create unique personal id number for new admin
+
+  // error handling
+  if (!fullname || !email || !cell || !team || !orgId) {
+    // 400: Bad Request
+    return res.status(400).end();
+  }
+
+  // create unique personal identification number for new admin
   const pin = randomBytes(16).toString('hex');
 
   try {

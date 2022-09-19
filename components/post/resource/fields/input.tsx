@@ -1,39 +1,79 @@
 import { Trash } from 'phosphor-react'
-import CustomListInput from './custom_list_input'
+import { useState } from 'react'
+import ListInput from '../list_input'
 
 type Props = {
   index: number,
   name: string,
-  content: string | string[]
+  content: string[]
+  type: 'text' | 'radio' | 'checkbox'
   removeField: (index: number) => void
 }
 
+// types of input: text, checkbox, radio
+
 export default function InfoField(props: Props) {
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string[]>(props.content || []);
+  const [type, setType] = useState<'text' | 'radio' | 'checkbox'>(props.type);
+
   return (
-    <div className="p-8 shadow-post-shadow rounded-xl mt-6">
+    <div className="p-10 shadow-post-shadow rounded-xl mb-12">
       <div className="flex items-center justify-between border-b-2 pb-3">
-        <h5>Custom Field #{props.index + 1}</h5>
+        <h5>Custom Input Field #{props.index + 1}</h5>
 
         <button onClick={e => {
           e.preventDefault();
           props.removeField(props.index);
         }}>
-          <Trash size={32} color="#717171" />
+          <Trash size={32} className="text-red-500" />
         </button>
       </div>
 
-      <h6 className="text-gray-text mt-5">Enter information you want to display to users in the form of bullet points and leave the formatting to us ;)</h6>
+      <div className="grid grid-cols-2 gap-10 mt-7">
+        <div>
+          <h6 className="text-gray-text">
+            Enter information you want to display to users in the form of bullet points:
+          </h6>
 
-      <input
-        type="text"
-        name={`customField${props.index}`}
-        placeholder="Enter field name"
-        className="input-field mt-4"
-      />
-      <CustomListInput
-        arrayName={`customField${props.index}`}
-        placeholder="Enter bullet points"
-      />
+          <input
+            type="text"
+            name={`customField${props.index}`}
+            placeholder="Enter field title"
+            className="input-field mt-4 mb-6 grow-0"
+            onKeyDown={(e) => {
+              if (['Enter', 'NumpadEnter'].includes(e.key)) {
+                e.preventDefault();
+                e.stopPropagation();
+              }
+            }}
+            onChange={e => {
+              setTitle(e.target.value);
+            }}
+            defaultValue={props.name}
+            autoComplete="off"
+            maxLength={200}
+            required
+          />
+
+          <ListInput
+            arrayName={`customField${props.index}`}
+            placeholder="Enter bullet points..."
+            inputList={content}
+            setInputList={setContent}
+          />
+        </div>
+
+        <div className="bg-gray-bg rounded-xl p-10">
+          <h5>{title ? title + ':' : ''}</h5>
+
+          <ol className="flex flex-col gap-y-2 mt-3 list-disc list-inside">
+            {content.map((item, index) => (
+              <li className="text-lg font-normal leading-8 tracking-wide" key={index}>{item}</li>
+            ))}
+          </ol>
+        </div>
+      </div>
     </div>
   )
 }
