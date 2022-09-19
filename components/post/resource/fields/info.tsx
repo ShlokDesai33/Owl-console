@@ -61,7 +61,7 @@ export default function InfoField(props: Props) {
         </div>
 
         <div className="bg-gray-bg rounded-xl p-10">
-          <h5>{title ? title + ':' : ''}</h5>
+          <h5>{title}</h5>
 
           <ol className="flex flex-col gap-y-2 mt-3 list-disc list-inside">
             {content.map((item, index) => (

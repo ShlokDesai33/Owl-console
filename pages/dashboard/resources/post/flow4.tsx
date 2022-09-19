@@ -7,14 +7,8 @@ import { useState } from 'react'
 import NewResourceHeader from '../../../../components/post/resource/header'
 import useSessionStorage from '../../../../hooks/useSessionStorage'
 import { useRouter } from 'next/router'
-import InfoField from '../../../../components/post/resource/fields/input'
-
-type CustomField = {
-  // name of field
-  name: string
-  content: string[]
-  type: 'text' | 'radio' | 'checkbox'
-}
+import InputField from '../../../../components/post/resource/fields/input'
+import type { CustomField } from '../../../../typescript/interfaces/form'
 
 const CreateResource = ({ data }: { data: string }) => {
   const router = useRouter();
@@ -28,13 +22,13 @@ const CreateResource = ({ data }: { data: string }) => {
       </Head>
 
       <main className="pt-12 px-12 overflow-y-scroll">
-        <form action="/dashboard/resources/post/flow5" method="post">
+        <form action="/dashboard/resources/post/submit" method="post">
           <NewResourceHeader flow={4} />
 
-          <h6 className="text-gray-text mb-8">Here you can add custom input fields to configure the resource to your, and your customer's needs(optional):</h6>
+          <h6 className="text-gray-text mb-8">Here you can add custom input fields to configure the resource to your, and your customer&apos;s needs(optional):</h6>
 
           {customFields.map((field, index) => (
-            <InfoField
+            <InputField
               key={index}
               index={index}
               name={field.name}

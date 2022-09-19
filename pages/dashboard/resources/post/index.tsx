@@ -46,6 +46,8 @@ const CreateResource: NextPageWithLayout = () => {
                   <h4>General</h4>
                 </div>
 
+                {/* <input type="file" name="image" /> */}
+
                 <input
                   type="text"
                   name="name"

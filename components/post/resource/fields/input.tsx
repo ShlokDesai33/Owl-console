@@ -1,11 +1,13 @@
 import { Trash } from 'phosphor-react'
 import { useState } from 'react'
-import ListInput from '../list_input'
+import ListInput from './components/priced_list_input'
+import InputTypes from './components/input_types'
+import type { Option } from '../../../../typescript/interfaces/form'
 
 type Props = {
   index: number,
   name: string,
-  content: string[]
+  content: Option[]
   type: 'text' | 'radio' | 'checkbox'
   removeField: (index: number) => void
 }
@@ -14,7 +16,7 @@ type Props = {
 
 export default function InfoField(props: Props) {
   const [title, setTitle] = useState<string>('');
-  const [content, setContent] = useState<string[]>(props.content || []);
+  const [content, setContent] = useState<Option[]>(props.content || []);
   const [type, setType] = useState<'text' | 'radio' | 'checkbox'>(props.type);
 
   return (
@@ -32,15 +34,15 @@ export default function InfoField(props: Props) {
 
       <div className="grid grid-cols-2 gap-10 mt-7">
         <div>
-          <h6 className="text-gray-text">
-            Enter information you want to display to users in the form of bullet points:
-          </h6>
+          <h6 className="text-gray-text mb-2">Choose an input type:</h6>
+
+          <InputTypes type={type} setType={setType} />
 
           <input
             type="text"
             name={`customField${props.index}`}
             placeholder="Enter field title"
-            className="input-field mt-4 mb-6 grow-0"
+            className="input-field grow-0 mt-8"
             onKeyDown={(e) => {
               if (['Enter', 'NumpadEnter'].includes(e.key)) {
                 e.preventDefault();
@@ -56,22 +58,81 @@ export default function InfoField(props: Props) {
             required
           />
 
-          <ListInput
-            arrayName={`customField${props.index}`}
-            placeholder="Enter bullet points..."
-            inputList={content}
-            setInputList={setContent}
-          />
+          {type === 'text' && 
+            (
+              <input
+                type="text"
+                name={`customField${props.index}`}
+                hidden
+                value="text"
+                readOnly
+              />
+            )
+          }
+
+          { type === 'radio' &&
+            (
+              <div className="mt-6">
+                <ListInput
+                  arrayName={`customField${props.index}`}
+                  placeholder="Enter radio option..."
+                  inputList={content}
+                  setInputList={setContent}
+                />
+
+                <input
+                  type="text"
+                  name={`customField${props.index}`}
+                  hidden
+                  value="radio"
+                  readOnly
+                />
+              </div>
+            )
+          }
+
+          { type === 'checkbox' &&
+            (
+              <div className="mt-6">
+                <ListInput
+                  arrayName={`customField${props.index}`}
+                  placeholder="Enter checkbox option..."
+                  inputList={content}
+                  setInputList={setContent}
+                />
+
+                <input
+                  type="text"
+                  name={`customField${props.index}`}
+                  hidden
+                  value="checkbox"
+                  readOnly
+                />
+              </div>
+            )
+          }
         </div>
 
         <div className="bg-gray-bg rounded-xl p-10">
-          <h5>{title ? title + ':' : ''}</h5>
+          <h5>{title ? title : '*Field Title*'}</h5>
 
-          <ol className="flex flex-col gap-y-2 mt-3 list-disc list-inside">
-            {content.map((item, index) => (
-              <li className="text-lg font-normal leading-8 tracking-wide" key={index}>{item}</li>
-            ))}
-          </ol>
+          { type === 'text' && <input type="text" className="input-field mt-4" placeholder="Type here..." /> }
+
+          { type === 'radio' && content.map((option, index) => (
+            <div key={index} className="flex items-center mt-4">
+              <input type="radio" name={`radio${props.index}`} />
+              <h6 className="ml-2">{option.value}</h6>
+              <h6 className="ml-2 text-primary">+ ₹{option.priceAddition}</h6>
+            </div>
+          ))}
+
+          { type === 'checkbox' && content.map((option, index) => (
+            <div key={index} className="flex items-center mt-4">
+              <input type="checkbox" name={`customField${props.index}`} />
+              <h6 className="ml-2">{option.value}</h6>
+              <h6 className="ml-2 text-primary">+ ₹{option.priceAddition}</h6>
+            </div>
+          ))}
         </div>
       </div>
     </div>

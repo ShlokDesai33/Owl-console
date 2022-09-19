@@ -3,31 +3,12 @@ import Head from 'next/head'
 import Layout from '../../../../components/layout'
 import { parseBody } from 'next/dist/server/api-utils/node'
 import { ArrowLeft, ArrowRight } from 'phosphor-react'
-import { useState } from 'react'
-import ListInput from '../../../../components/post/resource/list_input'
 import NewResourceHeader from '../../../../components/post/resource/header'
 import useSessionStorage from '../../../../hooks/useSessionStorage'
 import router from 'next/router'
-import Spinner from '../../../../components/lib/spinner'
 
 const CreateResource = ({ data }: { data: string }) => {
-  const { formData, redirect } = useSessionStorage(4, data);
-
-  if (redirect) {
-    router.replace('/dashboard/resources/post/');
-
-    return (
-      <>
-        <Head>
-          <title>Create Resources | Owl Console</title>
-        </Head>
-
-        <div className="flex grow place-items-center justify-center">
-          <Spinner />
-        </div>
-      </>
-    )
-  }
+  const { formData } = useSessionStorage(5, data);
 
   return (
     <>
@@ -53,7 +34,7 @@ const CreateResource = ({ data }: { data: string }) => {
           <div className="flex justify-center my-10 gap-x-8">
             <button className="flex items-center px-5 py-2 border-2 border-gray-btn rounded-xl gap-x-2" type="button" onClick={e => {
               e.preventDefault();
-              router.replace('/dashboard/resources/post/flow3', undefined, { shallow: true });
+              router.replace('/dashboard/resources/post/flow4', undefined, { shallow: true });
             }}>
               <ArrowLeft size={27} color="#717171" />
               <h5 className="font-medium text-gray-text">Back</h5>
@@ -88,6 +69,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 
   const body = await parseBody(req, '5mb');
+
+  console.log(body);
+  return { props: { data: null } };
 
   if (Object.keys(body).length === 0) return { props: { data: null } };
 
