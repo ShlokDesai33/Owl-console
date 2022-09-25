@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Layout from '../../../../components/layout'
 import { parseBody } from 'next/dist/server/api-utils/node'
-import { ArrowLeft, ArrowRight } from 'phosphor-react'
+import { ArrowLeft, Check } from 'phosphor-react'
 import { useState } from 'react'
 import NewResourceHeader from '../../../../components/post/resource/header'
 import useSessionStorage from '../../../../hooks/useSessionStorage'
@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 import InputField from '../../../../components/post/resource/fields/input'
 import type { CustomField } from '../../../../typescript/interfaces/form'
 
-const CreateResource = ({ data }: { data: string }) => {
+const CreateResource = ({ data }: { data: string | null }) => {
   const router = useRouter();
   const { formData } = useSessionStorage(4, data);
   const [customFields, setCustomFields] = useState<CustomField[]>(formData ? formData.inputFields || [] : []);
@@ -50,15 +50,15 @@ const CreateResource = ({ data }: { data: string }) => {
           <div className="flex justify-center my-10 gap-x-8">
             <button className="flex items-center px-5 py-2 border-2 border-gray-btn rounded-xl gap-x-2" type="button" onClick={e => {
               e.preventDefault();
-              router.push('/dashboard/resources/post/flow2', undefined, { shallow: true });
+              router.push('/dashboard/resources/post/flow3');
             }}>
               <ArrowLeft size={27} color="#717171" />
               <h5 className="font-medium text-gray-text">Back</h5>
             </button>
 
             <button className="flex items-center px-5 py-2 bg-primary rounded-xl gap-x-2 disabled:bg-gray-btn" type="submit">
-              <h5 className="font-medium text-white">Review</h5>
-              <ArrowRight size={27} color="white" />
+              <h5 className="font-medium text-white">Finish</h5>
+              <Check size={27} color="white" />
             </button>
           </div>
         </form>

@@ -10,7 +10,7 @@ type Props = {
 }
 
 export default function InfoField(props: Props) {
-  const [title, setTitle] = useState<string>('');
+  const [title, setTitle] = useState<string>(props.name);
   const [content, setContent] = useState<string[]>(props.content || []);
 
   return (

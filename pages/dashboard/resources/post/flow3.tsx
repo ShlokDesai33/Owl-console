@@ -54,7 +54,7 @@ const CreateResource = ({ data }: { data: string | null }) => {
           <div className="flex justify-center my-10 gap-x-8">
             <button className="flex items-center px-5 py-2 border-2 border-gray-btn rounded-xl gap-x-2" type="button" onClick={e => {
               e.preventDefault();
-              router.push('/dashboard/resources/post/flow2', undefined, { shallow: true });
+              router.push('/dashboard/resources/post/flow2');
             }}>
               <ArrowLeft size={27} color="#717171" />
               <h5 className="font-medium text-gray-text">Back</h5>

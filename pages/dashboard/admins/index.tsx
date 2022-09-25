@@ -74,9 +74,7 @@ const ManageAdmins = ({ error }: { error: boolean }) => {
             <span className="underline-offset-2 underline">Note: login details will be sent to the email provided.</span>
           </p>
 
-          { error && 
-            <h6 className="w-full text-center text-red-500 mt-4 mb-2">An error occured. Please try again later.</h6>
-          }
+          { error && <h6 className="w-full text-center text-red-500 mt-4 mb-2">An error occured. Please try again later.</h6> }
 
           <form onSubmit={() => {
             setTimeout(() => {

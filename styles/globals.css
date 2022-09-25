@@ -43,6 +43,9 @@
   input:-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0 50px white inset;
   }
+  ::-webkit-file-upload-button {
+    @apply bg-gray-bg border-0 py-2 px-6 rounded-full mr-3 text-primary font-medium text-lg;
+  }
   /* Configures scroll bar aesthetic. */
   ::-webkit-scrollbar {
     @apply w-0;

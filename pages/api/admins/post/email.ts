@@ -60,9 +60,7 @@ export default async function handler(
       <hr></hr>
       <p>You have been added to <i>${data.name}'s</i> ${team} team.</p>
       <p>You can find your login credentials in the encrypted pdf file attatched to this email.</p>
-      <p>Password to the pdf file is: 
-        <u>${editedName}</u>.
-      <p>
+      <p>Password to the pdf file is: <u>${editedName}</u>.<p>
     `, // html body
     attachments:[{
       // file on disk as an attachment

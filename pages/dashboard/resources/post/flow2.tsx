@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Layout from '../../../../components/layout'
 import { parseBody } from 'next/dist/server/api-utils/node'
-import { ArrowLeft, ArrowRight, Flask, Package, UserCircle } from 'phosphor-react'
+import { ArrowLeft, ArrowRight, Flask, Package, Prohibit, UserCircle, Wrench } from 'phosphor-react'
 import ListInput from '../../../../components/post/resource/list_input'
 import NewResourceHeader from '../../../../components/post/resource/header'
 import useSessionStorage from '../../../../hooks/useSessionStorage'
@@ -64,6 +64,23 @@ const CreateResource = ({ data }: { data: string | null }) => {
               </div>
 
               <div className="shadow-post-shadow rounded-xl p-10 h-fit mt-12">
+                <div className="flex items-center mb-6 gap-x-2">
+                  <Wrench size={30} color="#2F80ED" />
+                  <h4>Applications</h4>
+                </div>
+
+                <h6 className="text-gray-text mb-2">Atleast one application is required:</h6>
+                <ListInput
+                  arrayName="applications"
+                  placeholder="Applications"
+                  inputList={sampleReqs}
+                  setInputList={setSampleReqs}
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="shadow-post-shadow rounded-xl p-10 h-fit">
                 <div className="flex items-center mb-6 gap-x-3">
                   <Package size={30} color="#2F80ED" />
                   <h4>Packaging & Shipping Instructions</h4>
@@ -78,61 +95,20 @@ const CreateResource = ({ data }: { data: string | null }) => {
                   setInputList={setPackagingIns}
                 />
               </div>
-            </div>
 
-            <div>
-              <div className="pl-6 shadow-post-shadow rounded-xl p-10">
-                <div className="flex items-center gap-x-2 mb-6">
-                  <UserCircle size={30} color="#2F80ED" />
-                  <h4>Admin Details</h4>
+              <div className="shadow-post-shadow rounded-xl p-10 h-fit mt-12">
+                <div className="flex items-center mb-6 gap-x-2">
+                  <Prohibit size={30} color="#2F80ED" />
+                  <h4>Limitations</h4>
                 </div>
 
-                <h6 className="text-gray-text mb-3">These details will be given to users looking to rent this resource:</h6>
-
-                <input
-                  name="adminName"
-                  className="input-field mt-0 bg-gray-bg border-0"
-                  defaultValue={session.adminName}
-                  autoComplete="off"
-                  onKeyDown={(e) => {
-                    if (['Enter', 'NumpadEnter'].includes(e.key)) {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }
-                  }}
-                  readOnly
+                <h6 className="text-gray-text mb-2">Atleast one limitation is required:</h6>
+                <ListInput
+                  arrayName="limitations"
+                  placeholder="Limitations"
+                  inputList={packagingIns}
+                  setInputList={setPackagingIns}
                 />
-
-                <input
-                  name="adminEmail"
-                  className="input-field bg-gray-bg border-0"
-                  defaultValue={session.adminEmail}
-                  autoComplete="off"
-                  onKeyDown={(e) => {
-                    if (['Enter', 'NumpadEnter'].includes(e.key)) {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }
-                  }}
-                  readOnly
-                />
-
-                <div className="flex gap-x-2 input-field bg-gray-bg border-0">
-                  +91
-                  <input
-                    name="adminCell"
-                    className="outline-none bg-transparent"
-                    defaultValue={session.adminCell}
-                    autoComplete="off"
-                    onKeyDown={(e) => {
-                      if (['Enter', 'NumpadEnter'].includes(e.key)) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      }
-                    }}
-                    readOnly
-                  />
-                </div>
               </div>
             </div>
           </div>

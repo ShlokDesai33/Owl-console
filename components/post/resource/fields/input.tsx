@@ -15,7 +15,7 @@ type Props = {
 // types of input: text, checkbox, radio
 
 export default function InfoField(props: Props) {
-  const [title, setTitle] = useState<string>('');
+  const [title, setTitle] = useState<string>(props.name);
   const [content, setContent] = useState<Option[]>(props.content || []);
   const [type, setType] = useState<'text' | 'radio' | 'checkbox'>(props.type);
 

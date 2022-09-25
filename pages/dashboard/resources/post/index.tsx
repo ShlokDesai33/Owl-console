@@ -1,32 +1,32 @@
 import Head from 'next/head'
-import { ArrowRight, CurrencyDollar, Faders, Prohibit, Wrench } from 'phosphor-react'
+import { Check, CurrencyDollar, Faders, Image, UserCircle } from 'phosphor-react'
 import Layout from '../../../../components/layout'
 import NewResourceHeader from '../../../../components/post/resource/header'
 import useSession from '../../../../hooks/useSession'
 import { NextPageWithLayout } from '../../../../typescript/nextpage'
-import useSessionStorage from '../../../../hooks/useSessionStorage'
 import Spinner from '../../../../components/lib/spinner'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { getArray } from '../../../../components/post/resource/functions'
-import ListInput from '../../../../components/post/resource/list_input'
 
 const CreateResource: NextPageWithLayout = () => {
   const { data }= useSession();
-  const { formData } = useSessionStorage(1, null);
-  const [applications, setApplications] = useState<string[]>(formData ? getArray(formData.applications) : []);
-  const [limitations, setLimitations] = useState<string[]>(formData ? getArray(formData.limitations) : []);
+  const [state, setState] = useState<'loading' | 'error' | 'default'>('default');
+  const [file, setFile] = useState<File | null>(null);
+  const router = useRouter();
 
-  if (!data) return (
-    <>
-      <Head>
-        <title>Create Resources | Owl Console</title>
-      </Head>
+  if (!data || state === 'loading') {
+    return (
+      <>
+        <Head>
+          <title>Create Resources | Owl Console</title>
+        </Head>
 
-      <div className="flex grow place-items-center justify-center">
-        <Spinner />
-      </div>
-    </>
-  )
+        <div className="flex grow place-items-center justify-center">
+          <Spinner />
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
@@ -35,7 +35,46 @@ const CreateResource: NextPageWithLayout = () => {
       </Head>
 
       <main className="pt-12 px-12 overflow-y-scroll">
-        <form action="/dashboard/resources/post/flow2" method="post">
+        <form onSubmit={async e => {
+          e.preventDefault();
+          if (!file) return;
+          setState('loading');
+
+          const formData = new FormData(e.target as HTMLFormElement);
+          formData.append('imageType', file.type as string);
+
+          const res = await fetch('/api/resources/post', {
+            method: 'POST',
+            body: JSON.stringify(Object.fromEntries(formData)),
+            headers: { 'Content-Type': ' application/json' }
+          })
+
+          if (res.ok) {
+            const data = await res.json();
+  
+            Object.defineProperty(file, 'name', {
+              writable: true,
+              value: data.imageName
+            });
+  
+            fetch(data.url, {
+              method: 'PUT',
+              body: file,
+              headers: {
+                'Content-type': file.type,
+                'Access-Control-Allow-Origin': '*',
+              },
+            })
+            .then(res => {
+              if (res.ok) router.push('/dashboard/resources/view');
+              else setState('error'); setFile(null);
+            })
+            .catch(() => {
+              setState('error'); setFile(null);
+            })
+          }
+          else setState('error'); setFile(null);
+        }}>
           <NewResourceHeader flow={1} />
 
           <div className="grid grid-cols-2 gap-12">
@@ -46,15 +85,12 @@ const CreateResource: NextPageWithLayout = () => {
                   <h4>General</h4>
                 </div>
 
-                {/* <input type="file" name="image" /> */}
-
                 <input
                   type="text"
                   name="name"
                   placeholder="Resource Name"
                   className="input-field mt-0"
                   maxLength={50}
-                  defaultValue={formData ? formData.name : ''}
                   autoComplete="off"
                   onKeyDown={(e) => {
                     if (['Enter', 'NumpadEnter'].includes(e.key)) {
@@ -71,7 +107,6 @@ const CreateResource: NextPageWithLayout = () => {
                   placeholder="Resource Description"
                   className="input-field"
                   maxLength={150}
-                  defaultValue={formData ? formData.description : ''}
                   autoComplete="off"
                   onKeyDown={(e) => {
                     if (['Enter', 'NumpadEnter'].includes(e.key)) {
@@ -114,24 +149,83 @@ const CreateResource: NextPageWithLayout = () => {
                 </select>
               </div>
 
-              <div className="shadow-post-shadow rounded-xl p-10 h-fit mt-12">
-                <div className="flex items-center mb-6 gap-x-2">
-                  <Wrench size={30} color="#2F80ED" />
-                  <h4>Applications</h4>
+              <div className="shadow-post-shadow rounded-xl p-10 mt-12">
+                <div className="flex items-center gap-x-2 mb-6">
+                  <UserCircle size={30} color="#2F80ED" />
+                  <h4>Admin Details</h4>
                 </div>
 
-                <h6 className="text-gray-text mb-2">Atleast one application is required:</h6>
-                <ListInput
-                  arrayName="applications"
-                  placeholder="Applications"
-                  inputList={applications}
-                  setInputList={setApplications}
+                <h6 className="text-gray-text mb-3">These details will be given to users looking to rent this resource:</h6>
+
+                <input
+                  name="adminName"
+                  className="input-field mt-0 bg-gray-bg border-0"
+                  defaultValue={data.adminName}
+                  autoComplete="off"
+                  onKeyDown={(e) => {
+                    if (['Enter', 'NumpadEnter'].includes(e.key)) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }
+                  }}
+                  readOnly
                 />
+
+                <input
+                  name="adminEmail"
+                  className="input-field bg-gray-bg border-0"
+                  defaultValue={data.adminEmail}
+                  autoComplete="off"
+                  onKeyDown={(e) => {
+                    if (['Enter', 'NumpadEnter'].includes(e.key)) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }
+                  }}
+                  readOnly
+                />
+
+                <div className="flex gap-x-2 input-field bg-gray-bg border-0">
+                  +91
+                  <input
+                    name="adminCell"
+                    className="outline-none bg-transparent"
+                    defaultValue={data.adminCell}
+                    autoComplete="off"
+                    onKeyDown={(e) => {
+                      if (['Enter', 'NumpadEnter'].includes(e.key)) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }
+                    }}
+                    readOnly
+                  />
+                </div>
               </div>
             </div>
 
             <div>
-              <div className="shadow-post-shadow rounded-xl p-10">
+            <div className="shadow-post-shadow rounded-xl p-10">
+                <div className="flex items-center gap-x-3 mb-6">
+                  <Image size={30} color="#2F80ED" />
+                  <h4>Resource Image</h4>
+                </div>
+
+                <h6 className="text-gray-text mb-4">Please upload an image with dimensions 500x300:</h6>
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (file && file.type.startsWith('image/')) setFile(file);
+                    else setFile(null);
+                  }}
+                  required
+                />
+              </div>
+
+              <div className="shadow-post-shadow rounded-xl p-10 mt-12">
                 <div className="flex items-center mb-6 gap-x-1">
                   <CurrencyDollar size={30} color="#2F80ED" />
                   <h4>Pricing</h4>
@@ -146,10 +240,9 @@ const CreateResource: NextPageWithLayout = () => {
                 <input
                   type="number"
                   name="price"
-                  placeholder="Price"
+                  placeholder="Price in ₹"
                   className="input-field"
                   maxLength={50}
-                  defaultValue={formData ?  formData.price : ''}
                   autoComplete="off"
                   onKeyDown={(e) => {
                     if (['Enter', 'NumpadEnter'].includes(e.key)) {
@@ -160,14 +253,14 @@ const CreateResource: NextPageWithLayout = () => {
                   required
                 />
 
-                <div className="flex gap-x-3 input-field">
+                <h6 className="text-gray-text mt-5">Price Discounts:</h6>
+                <div className="flex gap-x-3 input-field mt-2">
                   %
                   <input
                     type="number"
-                    name="studentDiscount"
-                    placeholder="Student Discount"
+                    name="facultyDiscount"
+                    placeholder="Student and Faculty"
                     className="placeholder:text-gray-text w-full"
-                    defaultValue={formData ?  formData.studentDiscount : ''}
                     autoComplete="off"
                     onKeyDown={(e) => {
                       if (['Enter', 'NumpadEnter'].includes(e.key)) {
@@ -178,14 +271,14 @@ const CreateResource: NextPageWithLayout = () => {
                     required
                   />
                 </div>
-                <div className="flex gap-x-3 input-field">
+                
+                {/* <div className="flex gap-x-3 input-field">
                   %
                   <input
                     type="number"
-                    name="researcherDiscount"
-                    placeholder="Researcher/Educator Discount"
+                    name="academiaDiscount"
+                    placeholder="Academia and Educational Institutes"
                     className="placeholder:text-gray-text w-full"
-                    defaultValue={formData ? formData.researcherDiscount : ''}
                     autoComplete="off"
                     onKeyDown={(e) => {
                       if (['Enter', 'NumpadEnter'].includes(e.key)) {
@@ -195,34 +288,18 @@ const CreateResource: NextPageWithLayout = () => {
                     }}
                     required
                   />
-                </div>
-              </div>
-
-              <div className="shadow-post-shadow rounded-xl p-10 h-fit mt-12">
-                <div className="flex items-center mb-6 gap-x-2">
-                  <Prohibit size={30} color="#2F80ED" />
-                  <h4>Limitations</h4>
-                </div>
-
-                <h6 className="text-gray-text mb-2">Atleast one limitation is required:</h6>
-                <ListInput
-                  arrayName="limitations"
-                  placeholder="Limitations"
-                  inputList={limitations}
-                  setInputList={setLimitations}
-                />
+                </div> */}
               </div>
             </div>
           </div>
 
           <div className="flex justify-center my-10">
-            <button 
-              className="flex items-center px-5 py-2 bg-primary rounded-xl font-bold gap-x-2 disabled:bg-gray-btn"
+            <button className="flex items-center px-5 py-2 bg-primary rounded-xl gap-x-2 disabled:bg-gray-btn" 
               type="submit"
-              disabled={applications.length === 0 || limitations.length === 0}
+              disabled={!file}
             >
-              <h5 className="font-medium text-white">Next</h5>
-              <ArrowRight size={27} color="white" />
+              <h5 className="font-medium text-white">Submit</h5>
+              <Check size={27} color="white" />
             </button>
           </div>
         </form>
