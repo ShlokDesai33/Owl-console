@@ -1,6 +1,10 @@
 import { Trash } from 'phosphor-react'
 import { useRef } from 'react'
-import type { Option } from '../../../../../typescript/interfaces/form'
+
+export type Option = {
+  value: string
+  priceAddition: number
+}
 
 type Props = {
   arrayName: string

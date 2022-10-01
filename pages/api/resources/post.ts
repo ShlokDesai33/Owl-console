@@ -73,6 +73,17 @@ export default async function handler(
         industry: price,
         faculty: facultyPrice,
       },
+      // custom fields
+      fields: {
+        applications: 0,
+        limitations: 0,
+        // fields are named this way to allows easy formatting
+        sample_requirements: 0,
+        shipping_instructions: 0,
+        custom_info: 0,
+        custom_input: 0
+      },
+      address: "TODO",
       // timestamp
       createdAt: serverTimestamp(),
     });

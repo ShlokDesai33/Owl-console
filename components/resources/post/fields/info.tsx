@@ -16,7 +16,7 @@ export default function InfoField(props: Props) {
   return (
     <div className="p-10 shadow-post-shadow rounded-xl mb-12">
       <div className="flex items-center justify-between border-b-2 pb-3">
-        <h5>Custom Info Field #{props.index + 1}</h5>
+        <h5>Field #{props.index + 1}</h5>
 
         <button onClick={e => {
           e.preventDefault();
@@ -54,7 +54,6 @@ export default function InfoField(props: Props) {
 
           <ListInput
             arrayName={`customField${props.index}`}
-            placeholder="Enter bullet points..."
             inputList={content}
             setInputList={setContent}
           />

@@ -44,15 +44,15 @@ export default function NavBar(): JSX.Element {
         <NavButton
           title="Resources"
           icon={<Books size={30} weight="light" />}
-          url="/dashboard/resources/view"
+          url="/dashboard/resources"
           slug={true}
         />
         
-        { data?.isAdmin && 
+        { data?.isAdmin &&
           <NavButton
             title="Create Resource"
             icon={<PlusCircle size={30} />}
-            url="/dashboard/resources/post"
+            url="/dashboard/resources/create"
             slug={true}
           />
         }

@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { Barricade } from 'phosphor-react'
+import Layout from '../../components/layout'
 
 export default function CustomerSupport() {
   return (
@@ -14,4 +15,9 @@ export default function CustomerSupport() {
       </div>
     </>
   )
+}
+
+// return the Home page wrapped in the Layout component
+CustomerSupport.getLayout = function getLayout(page: React.ReactElement) {
+  return <Layout>{page}</Layout>;
 }

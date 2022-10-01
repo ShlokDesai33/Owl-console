@@ -1,8 +1,12 @@
 import { Trash } from 'phosphor-react'
 import { useState } from 'react'
-import ListInput from './components/priced_list_input'
+import PricedListInput from './components/priced_list_input'
 import InputTypes from './components/input_types'
-import type { Option } from '../../../../typescript/interfaces/form'
+
+export type Option = {
+  value: string
+  priceAddition: number
+}
 
 type Props = {
   index: number,
@@ -14,7 +18,7 @@ type Props = {
 
 // types of input: text, checkbox, radio
 
-export default function InfoField(props: Props) {
+export default function InputField(props: Props) {
   const [title, setTitle] = useState<string>(props.name);
   const [content, setContent] = useState<Option[]>(props.content || []);
   const [type, setType] = useState<'text' | 'radio' | 'checkbox'>(props.type);
@@ -22,7 +26,7 @@ export default function InfoField(props: Props) {
   return (
     <div className="p-10 shadow-post-shadow rounded-xl mb-12">
       <div className="flex items-center justify-between border-b-2 pb-3">
-        <h5>Custom Input Field #{props.index + 1}</h5>
+        <h5>Field #{props.index + 1}</h5>
 
         <button onClick={e => {
           e.preventDefault();
@@ -73,7 +77,7 @@ export default function InfoField(props: Props) {
           { type === 'radio' &&
             (
               <div className="mt-6">
-                <ListInput
+                <PricedListInput
                   arrayName={`customField${props.index}`}
                   placeholder="Enter radio option..."
                   inputList={content}
@@ -94,7 +98,7 @@ export default function InfoField(props: Props) {
           { type === 'checkbox' &&
             (
               <div className="mt-6">
-                <ListInput
+                <PricedListInput
                   arrayName={`customField${props.index}`}
                   placeholder="Enter checkbox option..."
                   inputList={content}
@@ -116,11 +120,11 @@ export default function InfoField(props: Props) {
         <div className="bg-gray-bg rounded-xl p-10">
           <h5>{title ? title : '*Field Title*'}</h5>
 
-          { type === 'text' && <input type="text" className="input-field mt-4" placeholder="Type here..." /> }
+          { type === 'text' && <input type="text" className="input-field mt-4" form="" placeholder="Type here..." /> }
 
           { type === 'radio' && content.map((option, index) => (
             <div key={index} className="flex items-center mt-4">
-              <input type="radio" name={`radio${props.index}`} />
+              <input type="radio" name={`radio${props.index}`} form="" />
               <h6 className="ml-2">{option.value}</h6>
               <h6 className="ml-2 text-primary">+ ₹{option.priceAddition}</h6>
             </div>
@@ -128,7 +132,7 @@ export default function InfoField(props: Props) {
 
           { type === 'checkbox' && content.map((option, index) => (
             <div key={index} className="flex items-center mt-4">
-              <input type="checkbox" name={`customField${props.index}`} />
+              <input type="checkbox" name={`checkbox${props.index}`} form="" />
               <h6 className="ml-2">{option.value}</h6>
               <h6 className="ml-2 text-primary">+ ₹{option.priceAddition}</h6>
             </div>

@@ -85,6 +85,7 @@ const ManageAdmins = ({ error }: { error: boolean }) => {
               type="text"
               name="name"
               placeholder="Full Name"
+              autoComplete="off"
               className="input-field"
               maxLength={50}
               required
@@ -94,6 +95,7 @@ const ManageAdmins = ({ error }: { error: boolean }) => {
               name="email"
               placeholder="Email"
               className="input-field"
+              autoComplete="off"
               required
             />
             <div className="flex gap-x-2 input-field">
@@ -105,6 +107,7 @@ const ManageAdmins = ({ error }: { error: boolean }) => {
                 className="placeholder:text-gray-text w-full"
                 maxLength={10}
                 pattern="[0-9]{10}"
+                autoComplete="off"
                 required
               />
             </div>
@@ -114,6 +117,7 @@ const ManageAdmins = ({ error }: { error: boolean }) => {
               name="team"
               placeholder="Team"
               className="input-field"
+              autoComplete="off"
               maxLength={50}
               required
             />

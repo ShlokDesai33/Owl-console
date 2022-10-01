@@ -1,10 +1,9 @@
 import Head from 'next/head'
-import { Check, CurrencyDollar, Faders, Image, UserCircle } from 'phosphor-react'
-import Layout from '../../../../components/layout'
-import NewResourceHeader from '../../../../components/post/resource/header'
-import useSession from '../../../../hooks/useSession'
-import { NextPageWithLayout } from '../../../../typescript/nextpage'
-import Spinner from '../../../../components/lib/spinner'
+import { Check, CurrencyDollar, Faders, Image, PlusCircle, UserCircle } from 'phosphor-react'
+import Layout from '../../../components/layout'
+import useSession from '../../../hooks/useSession'
+import { NextPageWithLayout } from '../../../typescript/nextpage'
+import Spinner from '../../../components/lib/spinner'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
@@ -25,6 +24,12 @@ const CreateResource: NextPageWithLayout = () => {
           <Spinner />
         </div>
       </>
+    )
+  }
+
+  if (state === 'error') {
+    return (
+      <>Error</>
     )
   }
 
@@ -66,7 +71,7 @@ const CreateResource: NextPageWithLayout = () => {
               },
             })
             .then(res => {
-              if (res.ok) router.push('/dashboard/resources/view');
+              if (res.ok) router.replace(`/dashboard/resources/${data.imageName}`);
               else setState('error'); setFile(null);
             })
             .catch(() => {
@@ -75,7 +80,22 @@ const CreateResource: NextPageWithLayout = () => {
           }
           else setState('error'); setFile(null);
         }}>
-          <NewResourceHeader flow={1} />
+          <div className="bg-gray-bg rounded-xl w-full py-3 px-5">
+            <h6 className="text-gray-text">
+              Please fill in all feilds. The more information you provide, the better our algorithm ranks this resource!
+            </h6>
+          </div>
+
+          <div className="flex items-center justify-between mt-6 mb-8">
+            <div className="flex items-center gap-x-3">
+              <PlusCircle size={30} color="#BE6CFF" />
+              <h3 className="font-normal">New Resource</h3>
+            </div>
+
+            <a href="/dashboard/support" target="_blank" rel="noreferrer" className="py-1 px-6 border-2 border-secondary rounded-full">
+              <h6 className="text-secondary font-medium">Help</h6>
+            </a>
+          </div>
 
           <div className="grid grid-cols-2 gap-12">
             <div>
@@ -233,8 +253,8 @@ const CreateResource: NextPageWithLayout = () => {
 
                 <h6 className="text-gray-text">Select a price metric (priced per sample by default):</h6>
                 <select name="priceMetric" className="py-4 px-4 w-full rounded-xl border-gray-btn text-xl border-2 mt-2">
-                  <option value="perSample">Per Sample</option>
-                  <option value="hourly">Hourly</option>
+                  <option value="sample">Per Sample</option>
+                  <option value="hour">Hourly</option>
                 </select>
 
                 <input

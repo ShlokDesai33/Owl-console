@@ -1,11 +1,11 @@
 import Head from 'next/head'
 import { Configure, InstantSearch } from 'react-instantsearch-hooks-web'
-import Layout from '../../../../components/layout'
-import { NextPageWithLayout } from '../../../../typescript/nextpage'
+import Layout from '../../../components/layout'
+import { NextPageWithLayout } from '../../../typescript/nextpage'
 import algoliasearch from 'algoliasearch/lite'
-import SearchResources from '../../../../components/search'
-import useSession from '../../../../hooks/useSession'
-import Spinner from '../../../../components/lib/spinner'
+import SearchResources from '../../../components/search'
+import useSession from '../../../hooks/useSession'
+import Spinner from '../../../components/lib/spinner'
 
 const algoliaClient = algoliasearch(
   '0Q9AHOYTD6',
@@ -37,7 +37,7 @@ const Resources: NextPageWithLayout = () => {
 
 
       <InstantSearch searchClient={algoliaClient} indexName="resources">
-        <Configure hitsPerPage={20} filters={`org.id:${data?.orgId}`} />
+        <Configure hitsPerPage={20} filters={`org.id:${data.orgId}`} />
         <SearchResources />
       </InstantSearch>
     </>

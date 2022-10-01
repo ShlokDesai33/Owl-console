@@ -16,10 +16,12 @@ export default function NavButton({ url, title, icon, slug }: Props): JSX.Elemen
   const router = useRouter();
   if (!slug ? router.pathname === url : router.pathname.startsWith(url)) {
     return (
-      <button className="flex w-fit items-center text-secondary group">
-        {icon}
-        <h6 className="ml-3 font-medium">{title}</h6>
-      </button>
+      <Link href={url} passHref>
+        <button className="flex w-fit items-center text-secondary group">
+          {icon}
+          <h6 className="ml-3 font-medium">{title}</h6>
+        </button>
+      </Link>
     )
   } else {
     return (

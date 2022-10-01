@@ -2,10 +2,9 @@ import { Trash } from 'phosphor-react'
 import { useRef } from 'react'
 
 type Props = {
-  arrayName: string
-  placeholder: string
   inputList: string[]
   setInputList: (inputList: string[]) => void
+  arrayName?: string
 }
 
 export default function ListInput(props: Props) {
@@ -18,9 +17,17 @@ export default function ListInput(props: Props) {
     setInputList(list);
   }
 
-  function handleAdd(value: string): void {
-    if (value === '') return;
-    setInputList([...inputList, value]);
+  function handleAdd(): void {
+    // error handling 1
+    if (!inputRef.current) return;
+    if (inputList.length >= 10) return;
+    // get current value of input
+    const val = inputRef.current.value as string;
+    // error handling 2
+    if (val.length === 0 || val.length > 250) return;
+    // add value to list
+    setInputList([...inputList, val]);
+    inputRef.current.value = '';
   }
 
   return (
@@ -28,16 +35,15 @@ export default function ListInput(props: Props) {
       <div className="flex items-center gap-x-6">
         <input
           type="text"
-          placeholder={props.placeholder}
+          placeholder="Type here..."
           className="input-field mt-0"
           onKeyDown={(e) => {
             if (['Enter', 'NumpadEnter'].includes(e.key)) {
+              // prevent form submission
               e.preventDefault();
               e.stopPropagation();
-              if (!inputRef.current) return;
-              if (inputRef.current.value.length > 250) return;
-              handleAdd(inputRef.current.value as string);
-              inputRef.current.value = '';
+              // add input value to list and clear input
+              handleAdd();
             }
           }}
           autoComplete="off"
@@ -48,13 +54,7 @@ export default function ListInput(props: Props) {
         <button
           type="button"
           className="py-2 px-5 border-2 border-primary rounded-xl text-primary disabled:border-gray-btn disabled:text-gray-text" 
-          onClick={e => {
-            e.preventDefault();
-            if (!inputRef.current) return;
-            if (inputRef.current.value.length > 250) return;
-            handleAdd(inputRef.current.value as string);
-            inputRef.current.value = '';
-          }}
+          onClick={e => { e.preventDefault(); handleAdd(); }}
           disabled={inputList.length >= 10}
         ><h5>Add</h5></button>
       </div>
@@ -63,16 +63,13 @@ export default function ListInput(props: Props) {
         <div className="flex items-center justify-between px-5 py-2 bg-gray-bg rounded-xl mt-4 gap-x-5" key={index}>
           <h5 className="truncate">{listItem}</h5>
           
-          <button onClick={e => {
-            e.preventDefault();
-            handleRemove(index);
-          }}>
+          <button onClick={e => { e.preventDefault(); handleRemove(index); }}>
             <Trash size={25} weight="light" />
           </button>
 
           <input
             type="text"
-            name={props.arrayName}
+            name={props.arrayName ? props.arrayName : "inputsArr"}
             hidden
             value={listItem}
             readOnly
