@@ -84,6 +84,7 @@ export default async function handler(
         custom_input: 0
       },
       address: "TODO",
+      metricVolumeLimit: body.metricVolumeLimit,
       // timestamp
       createdAt: serverTimestamp(),
     });

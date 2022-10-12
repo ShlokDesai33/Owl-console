@@ -291,6 +291,22 @@ const CreateResource: NextPageWithLayout = () => {
                     required
                   />
                 </div>
+
+                <input
+                  type="number"
+                  name="metricVolumeLimit"
+                  placeholder="Maximum number of samples/hours a day"
+                  className="input-field"
+                  maxLength={50}
+                  autoComplete="off"
+                  onKeyDown={(e) => {
+                    if (['Enter', 'NumpadEnter'].includes(e.key)) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }
+                  }}
+                  required
+                />
                 
                 {/* <div className="flex gap-x-3 input-field">
                   %

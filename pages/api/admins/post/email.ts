@@ -51,9 +51,9 @@ export default async function handler(
   
   let info = await transport.sendMail({
     from: '"Owl" no-reply@owlapp.in', // sender address
-    to: email, // list of receivers
+    to:   decodeURIComponent(email), // list of receivers
     subject: 'Your Login Details', // Subject line
-    html: 
+    html:
     `
       <h2>Welcome to Owl, ${fullname}!</h2>
       <hr></hr>

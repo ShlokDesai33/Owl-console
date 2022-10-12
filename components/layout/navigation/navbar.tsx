@@ -45,7 +45,7 @@ export default function NavBar(): JSX.Element {
           title="Resources"
           icon={<Books size={30} weight="light" />}
           url="/dashboard/resources"
-          slug={true}
+          slug={false}
         />
         
         { data?.isAdmin &&
