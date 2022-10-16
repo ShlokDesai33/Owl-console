@@ -5,6 +5,7 @@ const ContentSecurityPolicy = `
   font-src 'self' fonts.gstatic.com;
   img-src 'self' data: owlimagesbucket.s3.ap-south-1.amazonaws.com www.w3.org s3.ap-south-1.amazonaws.com;
   connect-src 'self' https://*.algolia.net https://*.algolianet.com owlimagesbucket.s3.ap-south-1.amazonaws.com;
+  object-src 'self';
 `
 
 const securityHeaders = [

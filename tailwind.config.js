@@ -22,7 +22,7 @@ module.exports = {
       },
       backgroundImage: {
         'landing': "url('/images/landing.svg')",
-      }
+      },
     },
   },
   plugins: [

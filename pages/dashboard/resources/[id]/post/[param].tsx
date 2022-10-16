@@ -5,7 +5,7 @@ import { parseBody } from 'next/dist/server/api-utils/node'
 import ListInput from '../../../../../components/resources/post/list_input'
 import { useState } from 'react'
 import DynamicHeader from '../../../../../components/resources/view/dynamic_header'
-import { writeBatch, doc, collection, updateDoc } from 'firebase/firestore'
+import { writeBatch, doc, updateDoc } from 'firebase/firestore'
 import db from '../../../../../firebase'
 import Spinner from '../../../../../components/lib/spinner'
 import { Bug } from 'phosphor-react'
@@ -104,7 +104,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   if (req.method !== 'POST') {
     // not a form submission
-    return { props: { param, id, state: 'default' } };
+    return { props: { param, id, resState: 'default' } };
   }
 
   // parse the body of the request
@@ -118,14 +118,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   if (!inputsArr || inputsArr.length === 0 || inputsArr.length > 10) {
     // invalid input
-    return { props: { param, id, state: 'error' } };
+    return { props: { param, id, resState: 'error' } };
   }
 
   try {
     const batch = writeBatch(db);
   
-    inputsArr.forEach((input: string) => {
-      batch.set(doc(collection(db, `resources/${id}/${param}`)), { content: input });
+    inputsArr.map((input: string, index: number) => {
+      batch.set(doc(db, `resources/${id}/${param}`, String(index)), { content: input });
     });
   
     await batch.commit();
@@ -136,7 +136,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     });
   }
   catch (err) {
-    return { props: { param, id, state: 'error' } };
+    return { props: { param, id, resState: 'error' } };
   }
 
   // redirect to resource page
