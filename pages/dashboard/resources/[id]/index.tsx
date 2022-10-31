@@ -54,7 +54,7 @@ const ViewResource = ({ id }: { id: string }) => {
       <main className="pt-12 px-12 overflow-y-auto h-full">
         <div className="flex gap-x-10 justify-between bg-gray-bg p-8 rounded-xl">
           <div className="shrink-0">
-            <Image 
+            <Image
               src={data.image}
               alt={data.name}
               width={250}
@@ -64,7 +64,7 @@ const ViewResource = ({ id }: { id: string }) => {
           </div>
 
           <div className="flex divide-x-2 w-full justify-between gap-x-10">
-            <div className="">
+            <div>
               <h3>{data.name}</h3>
               <h6 className="mt-2">{data.description}</h6>
             </div>

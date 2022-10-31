@@ -231,7 +231,7 @@ const CreateResource: NextPageWithLayout = () => {
                   <h4>Resource Image</h4>
                 </div>
 
-                <h6 className="text-gray-text mb-4">Please upload an image with dimensions 500x300:</h6>
+                <h6 className="text-gray-text mb-4">Please upload an image:</h6>
 
                 <input
                   type="file"
@@ -254,13 +254,19 @@ const CreateResource: NextPageWithLayout = () => {
                 <h6 className="text-gray-text">Select a price metric (priced per sample by default):</h6>
                 <select name="priceMetric" className="py-4 px-4 w-full rounded-xl border-gray-btn text-xl border-2 mt-2">
                   <option value="sample">Per Sample</option>
+                  <option value="run">Per Run</option>
+                  <option value="cycle">Per Cycle</option>
+
                   <option value="hour">Hourly</option>
+                  <option value="day">Daily</option>
+                  <option value="week">Weekly</option>
+                  <option value="month">Monthly</option>
                 </select>
 
                 <input
                   type="number"
                   name="price"
-                  placeholder="Price in ₹"
+                  placeholder="Price / Unit Metric (in ₹)"
                   className="input-field"
                   maxLength={50}
                   autoComplete="off"
