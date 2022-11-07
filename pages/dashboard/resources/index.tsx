@@ -35,7 +35,6 @@ const Resources: NextPageWithLayout = () => {
         <title>Your Resources | Owl Console</title>
       </Head>
 
-
       <InstantSearch searchClient={algoliaClient} indexName="resources">
         <Configure hitsPerPage={20} filters={`org.id:${data.orgId}`} />
         <SearchResources />
