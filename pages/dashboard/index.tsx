@@ -10,7 +10,7 @@ const Home: NextPageWithLayout = () => {
         <title>Home | Owl Console</title>
       </Head>
 
-      <div className="flex w-full justify-center items-center gap-x-3 m-10 bg-gray-bg rounded-xl">
+      <div className="flex w-full h-full justify-center items-center gap-x-3 m-10 bg-gray-bg rounded-xl">
         <Barricade size={70} color="#BE6CFF" weight="light" />
         <h3 className="font-normal">Comming Soon!</h3>
       </div>
