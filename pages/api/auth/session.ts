@@ -42,11 +42,11 @@ export default async function handler(
               // org details
               orgId: payload.org as string,
               orgName: org.name,
-              orgLogo: org.logo,
+              orgLogo: org.image,
               orgKey: org.credentials.key,
               // admin details
               adminId: payload.sub as string,
-              adminName: admin.fullname,
+              adminName: admin.name,
               adminEmail: admin.email,
               adminCell: admin.cell,
               adminTeam: admin.team,
@@ -59,7 +59,7 @@ export default async function handler(
           // org details
           orgId: payload.sub as string,
           orgName: org.name,
-          orgLogo: org.logo,
+          orgLogo: org.image,
           orgKey: org.credentials.key,
         });
       } else {

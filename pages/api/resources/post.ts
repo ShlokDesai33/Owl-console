@@ -58,7 +58,7 @@ export default async function handler(
         // org details
         id: body.orgId,
         name: body.orgName,
-        logo: body.orgLogo,
+        image: body.orgLogo,
       },
       // org's admin details
       admin: {

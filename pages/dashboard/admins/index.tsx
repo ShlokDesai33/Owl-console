@@ -162,7 +162,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     method: 'POST',
     body: JSON.stringify(
       {
-        fullname: name,
+        name: name,
         email,
         cell,
         team,

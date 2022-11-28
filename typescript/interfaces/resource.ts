@@ -21,10 +21,10 @@ export default interface Resource {
     // character count: 100 (including whitespace)
     name: string
     // amazon s3 url
-    logo: string
+    image: string
   }
   admin: {
-    fullname: string
+    name: string
     email: string
     cell: string
   }

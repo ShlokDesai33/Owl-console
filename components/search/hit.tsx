@@ -27,7 +27,7 @@ export default function Hit({ hit }: { hit: any }) {
 
       <div className="flex items-center mt-5 gap-x-2">
         <Image
-          src={hit.org.logo}
+          src={hit.org.ima}
           width={32}
           height={32}
           className="h-full w-full object-cover object-center rounded-full shrink-0"

@@ -53,7 +53,7 @@ export default function AdminCell({ admin, admins, setAdmins }: { admin: Admin, 
           <User size={50} color="#BE6CFF" />
           
           <div>
-            <h5>{admin.fullname}</h5>
+            <h5>{admin.name}</h5>
             <p className="text-gray-text truncate">{admin.team}</p>
           </div>
         </div>

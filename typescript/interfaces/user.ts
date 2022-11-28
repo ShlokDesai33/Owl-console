@@ -3,7 +3,7 @@ export default interface User {
   objectID: string | null
   // only present in firestore query results
   id: string | null
-  fullname: string
+  name: string
   image: string
   status: 'verified' | 'suspended'
 }

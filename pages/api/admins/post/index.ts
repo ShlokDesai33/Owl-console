@@ -8,10 +8,10 @@ export default async function handler(
   res: NextApiResponse
 ) {
   
-  const { fullname, email, cell, team, orgId } = req.body;
+  const { name, email, cell, team, orgId } = req.body;
 
   // error handling
-  if (!fullname || !email || !cell || !team || !orgId) {
+  if (!name || !email || !cell || !team || !orgId) {
     // 400: Bad Request
     return res.status(400).end();
   }
@@ -21,7 +21,7 @@ export default async function handler(
 
   try {
     await addDoc(collection(db, `users/${orgId}/admins`), {
-      fullname,
+      name,
       email,
       cell,
       team,
@@ -40,7 +40,7 @@ export default async function handler(
     method: 'POST',
     body: JSON.stringify(
       {
-        fullname,
+        name,
         email,
         team,
         orgId,

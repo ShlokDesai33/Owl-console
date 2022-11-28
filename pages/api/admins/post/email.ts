@@ -10,10 +10,10 @@ export default async function handler(
   res: NextApiResponse
 ) {
 
-  const { fullname, pin, orgId, email, team } = req.body
+  const { name, pin, orgId, email, team } = req.body
 
   // error handling
-  if (!fullname || !pin || !orgId || !email || !team) {
+  if (!name || !pin || !orgId || !email || !team) {
     // 400: Bad Request
     return res.status(400).end();
   }
@@ -29,13 +29,13 @@ export default async function handler(
   const data = docSnap.data();
   
   // first encrypt the pdf
-  const editedName = fullname.replace(' ', '').toLowerCase();
+  const editedName = name.replace(' ', '').toLowerCase();
   var pdfDoc = new PdfKit({ userPassword: editedName, ownerPassword: editedName });
 
   var stream = fs.createWriteStream('./credentials.pdf');
   pdfDoc.pipe(stream);
   pdfDoc.text(
-    `${fullname} | ${data.name}\n\npin = ${pin}\nkey = ${data.credentials.key}`
+    `${name} | ${data.name}\n\npin = ${pin}\nkey = ${data.credentials.key}`
   );
   pdfDoc.end();
   
@@ -55,7 +55,7 @@ export default async function handler(
     subject: 'Your Login Details', // Subject line
     html:
     `
-      <h2>Welcome to Owl, ${fullname}!</h2>
+      <h2>Welcome to Owl, ${name}!</h2>
       <hr></hr>
       <p>You have been added to <i>${data.name}'s</i> ${team} team.</p>
       <p>You can find your login credentials in the encrypted pdf file attatched to this email.</p>
