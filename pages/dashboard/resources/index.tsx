@@ -9,7 +9,7 @@ import Spinner from '../../../components/lib/spinner'
 
 const algoliaClient = algoliasearch(
   '0Q9AHOYTD6',
-  '1082e2607eb9dfe00542fd25210af538'
+  'e5939ceebf94733c18e54c72a3d2686e'
 );
 
 const Resources: NextPageWithLayout = () => {
