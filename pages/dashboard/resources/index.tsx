@@ -36,7 +36,7 @@ const Resources: NextPageWithLayout = () => {
       </Head>
 
       <InstantSearch searchClient={algoliaClient} indexName="resources">
-        <Configure hitsPerPage={20} filters={`org.id:${data.orgId}`} />
+        <Configure hitsPerPage={20} />
         <SearchResources />
       </InstantSearch>
     </>
