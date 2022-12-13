@@ -1,6 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import fs from 'fs'
-import PdfKit from 'pdfkit'
 import nodeMailer from 'nodemailer'
 import { doc, getDoc } from 'firebase/firestore'
 import db from '../../../../firebase'
@@ -28,17 +26,6 @@ export default async function handler(
   // get org name and key
   const data = docSnap.data();
   
-  // first encrypt the pdf
-  const editedName = name.replace(' ', '').toLowerCase();
-  var pdfDoc = new PdfKit({ userPassword: editedName, ownerPassword: editedName });
-
-  var stream = fs.createWriteStream('./credentials.pdf');
-  pdfDoc.pipe(stream);
-  pdfDoc.text(
-    `${name} | ${data.name}\n\npin = ${pin}\nkey = ${data.credentials.key}`
-  );
-  pdfDoc.end();
-  
   // send email asynchronously
   let transport = nodeMailer.createTransport({
     host: 'smtpout.secureserver.net',
@@ -51,21 +38,17 @@ export default async function handler(
   
   let info = await transport.sendMail({
     from: '"Owl" no-reply@owlapp.in', // sender address
-    to:   decodeURIComponent(email), // list of receivers
+    to: decodeURIComponent(email), // list of receivers
     subject: 'Your Login Details', // Subject line
     html:
     `
       <h2>Welcome to Owl, ${name}!</h2>
       <hr></hr>
       <p>You have been added to <i>${data.name}'s</i> ${team} team.</p>
-      <p>You can find your login credentials in the encrypted pdf file attatched to this email.</p>
-      <p>Password to the pdf file is: <u>${editedName}</u>.<p>
+      <p>Your login credentials are given below. Please DO NOT share your log credentials with anybody.</p>
+      <p>Pin: <u>${pin}</u>.<p>
+      <p>Key: <u>${data.credentials.key}</u>.<p>
     `, // html body
-    attachments:[{
-      // file on disk as an attachment
-      filename: 'credentials.pdf',
-      path: './credentials.pdf' // stream this file
-    }],
   });
 
   if (info.accepted.length !== 1) {
