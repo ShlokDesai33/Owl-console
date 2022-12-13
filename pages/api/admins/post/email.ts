@@ -45,7 +45,7 @@ export default async function handler(
       <h2>Welcome to Owl, ${name}!</h2>
       <hr></hr>
       <p>You have been added to <i>${data.name}'s</i> ${team} team.</p>
-      <p>Your login credentials are given below. Please DO NOT share your log credentials with anybody.</p>
+      <p>Please go to https://owl-console.vercel.app and log in using the credentials given below. Please DO NOT share your login credentials with anybody.</p>
       <p>Pin: <u>${pin}</u>.<p>
       <p>Key: <u>${data.credentials.key}</u>.<p>
     `, // html body
