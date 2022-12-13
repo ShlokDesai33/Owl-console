@@ -14,7 +14,7 @@ const EditResource = () => {
   
   return (
     <>
-      hi
+      <h1>Edit Resource</h1>
     </>
   )
 }
