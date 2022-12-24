@@ -161,6 +161,14 @@ const CreateResource: NextPageWithLayout = () => {
                   readOnly
                 />
 
+                <input
+                  type="text"
+                  name="adminId"
+                  hidden
+                  value={data.adminId}
+                  readOnly
+                />
+
                 <h6 className="text-gray-text mt-4">Select the current status of your resource:</h6>
                 <select name="status" className="py-4 px-4 w-full rounded-xl border-gray-btn text-xl border-2 mt-2">
                   <option value="Available">Available</option>

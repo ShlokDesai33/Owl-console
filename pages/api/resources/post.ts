@@ -62,6 +62,7 @@ export default async function handler(
       },
       // org's admin details
       admin: {
+        id: body.adminId,
         name: body.adminName,
         // admin contact details
         email: body.adminEmail,
