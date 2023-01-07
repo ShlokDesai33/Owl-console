@@ -6,7 +6,7 @@ export default function CustomerSupport() {
   return (
     <>
       <Head>
-        <title>Customer Support | Owl Console</title>
+        <title>Customer Support | Instrumus Console</title>
       </Head>
       
       <div className="flex h-full w-full justify-center items-center gap-x-3 fixed mb-20">

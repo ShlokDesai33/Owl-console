@@ -5,7 +5,7 @@ export default function ForgotCredentials() {
   return (
     <>
       <Head>
-        <title>Forgot Credentials | Owl Console</title>
+        <title>Forgot Credentials | Instrumus Console</title>
       </Head>
       
       <div className="flex h-full w-full justify-center items-center gap-x-3 fixed mb-20">

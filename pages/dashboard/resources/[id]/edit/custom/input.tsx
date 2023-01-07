@@ -37,7 +37,7 @@ const PostInputFields = ({ id, resState }: Props) => {
       return (
         <>
           <Head>
-            <title>Create Resources | Owl Console</title>
+            <title>Create Resources | Instrumus Console</title>
           </Head>
   
           <div className="flex grow place-items-center justify-center">
@@ -50,7 +50,7 @@ const PostInputFields = ({ id, resState }: Props) => {
       return (
         <>
           <Head>
-            <title>Create Resources | Owl Console</title>
+            <title>Create Resources | Instrumus Console</title>
           </Head>
     
           <div className="flex grow place-items-center justify-center">
@@ -69,7 +69,7 @@ const PostInputFields = ({ id, resState }: Props) => {
       return (
         <>
           <Head>
-            <title>Create Resources | Owl Console</title>
+            <title>Create Resources | Instrumus Console</title>
           </Head>
     
           <main className="pt-12 px-12 overflow-y-scroll">

@@ -3,7 +3,7 @@ const ContentSecurityPolicy = `
   script-src 'self' 'unsafe-inline' 'unsafe-eval';
   style-src 'self' 'unsafe-inline' fonts.googleapis.com;
   font-src 'self' fonts.gstatic.com;
-  img-src 'self' data: owlimagesbucket.s3.ap-south-1.amazonaws.com www.w3.org s3.ap-south-1.amazonaws.com;
+  img-src 'self' data: owlimagesbucket.s3.ap-south-1.amazonaws.com www.w3.org s3.ap-south-1.amazonaws.com source.boringavatars.com;
   connect-src 'self' https://*.algolia.net https://*.algolianet.com owlimagesbucket.s3.ap-south-1.amazonaws.com;
   object-src 'self';
 `
@@ -40,7 +40,8 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['owlimagesbucket.s3.ap-south-1.amazonaws.com', 's3.ap-south-1.amazonaws.com'],
+    dangerouslyAllowSVG: true,
+    domains: ['owlimagesbucket.s3.ap-south-1.amazonaws.com', 's3.ap-south-1.amazonaws.com', 'source.boringavatars.com'],
   },
   async headers() {
     return [

@@ -8,7 +8,7 @@ const SignOut: NextPageWithLayout = () => {
   return (
     <>
       <Head>
-        <title>Sign Out | Owl Console</title>
+        <title>Sign Out | Instrumus Console</title>
         <meta name="description" content="Owl's landing page"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
         <meta name="keywords" content="Owl, Home, Log In, Sign Up, Landing Page"></meta>

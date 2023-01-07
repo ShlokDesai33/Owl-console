@@ -19,7 +19,7 @@ const Resources: NextPageWithLayout = () => {
     return (
       <>
         <Head>
-          <title>Create Resources | Owl Console</title>
+          <title>Create Resources | Instrumus Console</title>
         </Head>
 
         <div className="flex grow place-items-center justify-center">
@@ -32,7 +32,7 @@ const Resources: NextPageWithLayout = () => {
   return (
     <>
       <Head>
-        <title>Your Resources | Owl Console</title>
+        <title>Your Resources | Instrumus Console</title>
       </Head>
 
       <InstantSearch searchClient={algoliaClient} indexName="resources">

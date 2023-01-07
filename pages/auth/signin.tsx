@@ -21,7 +21,7 @@ const SignIn = ({ pageState }: { pageState: 'default' | '401' | '500' }) => {
     return (
       <>
         <Head>
-          <title>Sign In | Owl Console</title>
+          <title>Sign In | Instrumus Console</title>
           <meta name="description" content="Owl's landing page"/>
           <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
           <meta name="keywords" content="Owl, Home, Log In, Sign Up, Landing Page"></meta>
@@ -39,7 +39,7 @@ const SignIn = ({ pageState }: { pageState: 'default' | '401' | '500' }) => {
   return (
     <>
       <Head>
-        <title>Sign In | Owl Console</title>
+        <title>Sign In | Instrumus Console</title>
         <meta name="description" content="Owl's landing page"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
         <meta name="keywords" content="Owl, Home, Log In, Sign Up, Landing Page"></meta>

@@ -16,7 +16,7 @@ const ViewResource = ({ id }: { id: string }) => {
     return (
       <>
         <Head>
-          <title>Create Resources | Owl Console</title>
+          <title>Create Resources | Instrumus Console</title>
         </Head>
 
         <div className="flex grow place-items-center justify-center">
@@ -29,7 +29,7 @@ const ViewResource = ({ id }: { id: string }) => {
     return (
       <>
         <Head>
-          <title>Create Resources | Owl Console</title>
+          <title>Create Resources | Instrumus Console</title>
         </Head>
   
         <div className="flex grow place-items-center justify-center">
@@ -48,7 +48,7 @@ const ViewResource = ({ id }: { id: string }) => {
   return (
     <>
       <Head>
-        <title>Home | Owl Console</title>
+        <title>Home | Instrumus Console</title>
       </Head>
 
       <main className="pt-12 px-12 overflow-y-auto h-full">

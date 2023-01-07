@@ -24,7 +24,7 @@ const ManageAdmins = ({ error }: { error: boolean }) => {
     return (
       <>
         <Head>
-          <title>Admin Management | Owl Console</title>
+          <title>Admin Management | Instrumus Console</title>
         </Head>
 
         <div className="flex h-full w-full items-center justify-center pb-10">
@@ -38,7 +38,7 @@ const ManageAdmins = ({ error }: { error: boolean }) => {
     return (
       <>
         <Head>
-          <title>Admin Management | Owl Console</title>
+          <title>Admin Management | Instrumus Console</title>
         </Head>
 
         <div className="flex grow justify-center items-center gap-x-3">
@@ -57,7 +57,7 @@ const ManageAdmins = ({ error }: { error: boolean }) => {
   return (
     <>
       <Head>
-        <title>Admin Management | Owl Console</title>
+        <title>Admin Management | Instrumus Console</title>
       </Head>
       
       <main className="flex w-full h-full overflow-x-scroll">

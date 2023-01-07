@@ -12,7 +12,7 @@ export default function NavBar(): JSX.Element {
   const { data } = useSession();
 
   return (
-    <div className="flex flex-col shrink-0 w-80 border-r-2 bg-gray-bg">
+    <div className="flex flex-col shrink-0 w-72 border-r-2 bg-gray-bg">
       {/* logo div */}
       <div className="flex items-center pl-11 border-b-2 h-36 shrink-0">
         <Image
@@ -21,7 +21,7 @@ export default function NavBar(): JSX.Element {
           height={50}
           alt="Owl Logo"
         />
-        <h3 className="ml-1">Owl <span className="text-gray-text font-normal">Console</span></h3>
+        <h3 className="ml-1 font-normal">Console</h3>
       </div>
       {/* main nav buttons */}
       <div className="flex flex-col gap-y-10 py-12 pl-11 border-b-2">

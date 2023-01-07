@@ -2,9 +2,8 @@ import { MapPin, Tag } from 'phosphor-react'
 import Image from 'next/image'
 
 export default function Hit({ hit }: { hit: any }) {
-
   return (
-    <a key={hit.objectID} href={`/dashboard/resources/${hit.objectID}`} className="group">
+    <a key={hit.objectID} href={`/dashboard/resources/${hit.objectID}`} className="group will-change-scroll">
       <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
         <img
           src={hit.image}

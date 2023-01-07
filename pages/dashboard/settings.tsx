@@ -7,7 +7,7 @@ export default function Settings() {
   return (
     <>
       <Head>
-        <title>Settings | Owl Console</title>
+        <title>Settings | Instrumus Console</title>
       </Head>
       
       <div className="flex flex-col grow p-12">

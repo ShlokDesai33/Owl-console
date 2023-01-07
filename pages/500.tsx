@@ -4,7 +4,7 @@ export default function Custom500() {
   return (
     <>
       <Head>
-        <title>Owl Console</title>
+        <title>Instrumus Console</title>
       </Head>
       
       <div className="flex h-full w-full justify-center items-center divide-x-2 gap-x-5 fixed mb-20">
